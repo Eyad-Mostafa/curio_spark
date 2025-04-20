@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-
-import '../model/todo.dart';
+import '../model/curiosity.dart';
 import '../constants/colors.dart';
 
-class ToDoItem extends StatelessWidget {
-  final Curiosities todo;
-  final Function(Curiosities) onToDoChanged;
-  final Function(String) onDeleteItem;
+class CuriosityCard extends StatelessWidget {
+  final Curiosity curiosity;
+  final Function(Curiosity) onCuriosityTapped;
+  final Function(String) onDeleteCuriosity;
 
-  const ToDoItem({
+  const CuriosityCard({
     Key? key,
-    required this.todo,
-    required this.onToDoChanged,
-    required this.onDeleteItem,
+    required this.curiosity,
+    required this.onCuriosityTapped,
+    required this.onDeleteCuriosity,
   }) : super(key: key);
 
   @override
@@ -21,7 +20,7 @@ class ToDoItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 20),
       child: ListTile(
         onTap: () {
-          onToDoChanged(todo);
+          onCuriosityTapped(curiosity);
         },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -29,18 +28,17 @@ class ToDoItem extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         tileColor: Colors.white,
         title: Text(
-          todo.CuriosText ?? '',
+          curiosity.content ?? '',
           style: TextStyle(
             fontSize: 16,
             color: tdBlack,
-           
           ),
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              todo.isDone ? Icons.favorite : Icons.favorite_outline,
+              curiosity.isFavorite ? Icons.favorite : Icons.favorite_outline,
               color: const Color.fromARGB(255, 50, 49, 51),
             ),
             const SizedBox(width: 10),
@@ -55,7 +53,9 @@ class ToDoItem extends StatelessWidget {
                 color: Colors.white,
                 iconSize: 16,
                 icon: const Icon(Icons.share),
-                onPressed: () {},
+                onPressed: () {
+                  // Optional: implement Share.share(curiosity.content ?? '');
+                },
               ),
             ),
           ],
