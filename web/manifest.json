@@ -1,6 +1,6 @@
 {
-    "name": "curio_spark",
-    "short_name": "curio_spark",
+    "name": "flutter_todo_app",
+    "short_name": "flutter_todo_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
