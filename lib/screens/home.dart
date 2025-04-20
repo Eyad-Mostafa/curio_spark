@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/screens/fav.dart';
-import 'package:flutter_todo_app/screens/sett.dart';
+import 'package:curio_spark/screens/fav.dart';
+import 'package:curio_spark/screens/sett.dart';
 import '../model/todo.dart'; // Update this import
 import '../constants/colors.dart';
 import '../widgets/todo_item.dart'; // This widget might need updates if necessary
@@ -189,7 +189,7 @@ class _HomeState extends State<Home> {
           width: 40,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: Image.asset('assets/images/55.png'),
+            child: Image.asset('assets/images/icon/icon.png'),
           ),
         ),
       ]),
