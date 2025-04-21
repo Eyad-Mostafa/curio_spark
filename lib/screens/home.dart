@@ -4,6 +4,7 @@ import 'package:curio_spark/screens/sett.dart';
 import '../model/curiosity.dart';
 import '../constants/colors.dart';
 import '../widgets/curiosity_card.dart';
+import 'dart:ui';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
