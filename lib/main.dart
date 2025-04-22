@@ -1,3 +1,4 @@
+import 'package:curio_spark/screens/MainScreen.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +12,13 @@ void main() {
     DevicePreview(
       enabled: !kReleaseMode, // Only enable in debug mode
       builder: (context) => ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
-      child: const MyApp(),
-    ), // Wrap your app
+        create: (_) => ThemeProvider(),
+        child: const MyApp(),
+      ), // Wrap your app
     ),
-
   );
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -29,17 +30,14 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return MaterialApp(
-      builder:DevicePreview.appBuilder,
+      builder: DevicePreview.appBuilder,
       useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
       title: 'CurioSpark',
-      home: HomeScreen(),
-
+      home: MainScreen(),
       themeMode: themeProvider.themeMode,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
     );
   }
 }
-
-
