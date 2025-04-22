@@ -1,6 +1,17 @@
-class Curiosity {
+import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
+import 'package:hive/hive.dart';
+
+part 'curiosity.g.dart';
+
+@HiveType(typeId: 0)
+class Curiosity extends HiveObject {
+  @HiveField(0)
   String? id;
+
+  @HiveField(1)
   String? content;
+
+  @HiveField(2)
   bool isFavorite;
 
   Curiosity({
@@ -8,6 +19,8 @@ class Curiosity {
     required this.content,
     this.isFavorite = false,
   });
+
+  static List<Curiosity> curiosities = CuriosityHiveService.getAll();
 
   static List<Curiosity> sampleData() {
     return [

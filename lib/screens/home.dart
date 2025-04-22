@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
 import '../model/curiosity.dart';
 import '../constants/colors.dart';
 import '../widgets/curiosity_card.dart';
-import 'dart:ui';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,22 +12,31 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Curiosity> curiosities = Curiosity.sampleData();
+  List<Curiosity> curiosities = [];
   List<Curiosity> filteredCuriosities = [];
 
   @override
   void initState() {
-    filteredCuriosities = curiosities;
     super.initState();
+    _loadCuriositiesFromHive();
+  }
+
+  void _loadCuriositiesFromHive() {
+    final loaded = CuriosityHiveService.getAll();
+    setState(() {
+      curiosities = loaded;
+      filteredCuriosities = loaded;
+    });
   }
 
   void _handleFavoriteToggle(Curiosity curiosity) {
     setState(() {
-      curiosity.isFavorite = !curiosity.isFavorite;
+      CuriosityHiveService.toggleFavorite(curiosity.id);
     });
   }
 
   void _deleteCuriosityById(String id) {
+    // CuriosityHiveService.deleteCuriosity(id);
     setState(() {
       curiosities.removeWhere((item) => item.id == id);
       filteredCuriosities.removeWhere((item) => item.id == id);
@@ -35,8 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _runFilter(String enteredKeyword) {
-    List<Curiosity> results = [];
-
+    List<Curiosity> results;
     if (enteredKeyword.isEmpty) {
       results = curiosities;
     } else {
@@ -93,7 +101,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
