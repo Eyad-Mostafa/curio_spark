@@ -1,4 +1,8 @@
 import 'package:curio_spark/constants/colors.dart';
+import 'package:curio_spark/model/curiosity.dart';
+import 'package:curio_spark/screens/fav.dart';
+import 'package:curio_spark/screens/home.dart';
+import 'package:hive/hive.dart';
 import 'package:curio_spark/screens/updateProfile.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/material.dart';
@@ -15,95 +19,135 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-
     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
-          title: Text("Settings", style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          )),
-        actions: [IconButton(
-          onPressed: () => themeProvider.toggleTheme(), 
-          icon: Icon(isDark? LineAwesomeIcons.sun : LineAwesomeIcons.moon),
-          )],
-        ),
-
-        body: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              children: [
-                //Image
-                Stack(
-                  children: [
-                    SizedBox(
-                      width: 120, height: 120,
-                      child:ClipRRect(borderRadius: BorderRadius.circular(100), child: Image(image: AssetImage(tProfileImage)),)
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        width: 35, height: 35,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: tPrimary,
-                        ),
-                        child: Icon(
-                          LineAwesomeIcons.alternate_pencil, 
-                          color: Colors.black,),
+        title: Text("Settings",
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            )),
+        actions: [
+          IconButton(
+            onPressed: () => themeProvider.toggleTheme(),
+            icon: Icon(isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon),
+          )
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: [
+              //Image
+              Stack(
+                children: [
+                  SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image(image: AssetImage(tProfileImage)),
+                      )),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: tPrimary,
                       ),
-                    )
-                  ],
-                ),
-                SizedBox(height: 10,),
-                Text("welcome mr.", style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                )), 
-                /////////we need display name and some details alternate welcome///////////////
-                SizedBox(height: 20,),
-                SizedBox(
-                  width: 200,
-                  height: 40,
-                  child: ElevatedButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateProfileScreen()));
+                      child: Icon(
+                        LineAwesomeIcons.alternate_pencil,
+                        color: Colors.black,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text("welcome mr.",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  )),
+              /////////we need display name and some details alternate welcome///////////////
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                width: 200,
+                height: 40,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UpdateProfileScreen()));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: bgButton, side: BorderSide.none, shape: StadiumBorder(),
-                    ),
-                  child: Text("Edit Profile",
-                  style: TextStyle(
-                    color: tBColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold
+                    backgroundColor: bgButton,
+                    side: BorderSide.none,
+                    shape: StadiumBorder(),
                   ),
-                  ///////////////we need change fontFamily/////////////
-                  ),),
+                  child: Text(
+                    "Edit Profile",
+                    style: TextStyle(
+                        color: tBColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    ///////////////we need change fontFamily/////////////
+                  ),
                 ),
-                SizedBox(width: 30,),
-                Divider(),
-                SizedBox(width: 10,),
+              ),
+              SizedBox(
+                width: 30,
+              ),
+              Divider(),
+              SizedBox(
+                width: 10,
+              ),
 
-                ProfileMenu(title: "Notifications", icon: LineAwesomeIcons.bell, onPress: (){}),
-                ProfileMenu(title: "Help", icon: LineAwesomeIcons.question_circle, onPress: (){}),
-                ProfileMenu(title: "About", icon: LineAwesomeIcons.exclamation_circle, onPress: (){}),
-                Divider(),
-                SizedBox(height: 10,),
-                ProfileMenu(
-                  title: "Logout", 
-                  textColor: Colors.red,
-                  endIcon:  false,
-                  icon: LineAwesomeIcons.alternate_sign_out, 
-                  onPress: (){},
-                  ),
-              ],
-            ),
+              ProfileMenu(
+                  title: "Notifications",
+                  icon: LineAwesomeIcons.bell,
+                  onPress: () {}),
+              ProfileMenu(
+                  title: "Help",
+                  icon: LineAwesomeIcons.question_circle,
+                  onPress: () {}),
+              ProfileMenu(
+                  title: "About",
+                  icon: LineAwesomeIcons.exclamation_circle,
+                  onPress: () {}),
+              Divider(),
+              SizedBox(
+                height: 10,
+              ),
+              ProfileMenu(
+                title: "Reset",
+                textColor: Colors.red,
+                endIcon: false,
+                icon: LineAwesomeIcons.alternate_sign_out,
+                onPress: () async {
+                  final box = Hive.box<Curiosity>('curiosities');
+                  await box.clear();
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Data cleared.")),
+                  );
+                },
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 }
@@ -116,39 +160,49 @@ class ProfileMenu extends StatelessWidget {
     required this.onPress,
     this.endIcon = true,
     this.textColor,
-    }) : super(key: key);
+  }) : super(key: key);
 
-    final String title;
-    final IconData icon;
-    final VoidCallback onPress;
-    final bool endIcon;
-    final Color? textColor;
+  final String title;
+  final IconData icon;
+  final VoidCallback onPress;
+  final bool endIcon;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
-
-    var isDark =  MediaQuery.of(context).platformBrightness == Brightness.dark;
-    var iconColor = isDark? dIColor: lIColor;
+    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    var iconColor = isDark ? dIColor : lIColor;
 
     return ListTile(
       onTap: onPress,
       leading: Container(
-        width: 30, height: 40,
+        width: 30,
+        height: 40,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           color: tArrow.withOpacity(0.1),
         ),
-        child: Icon(icon, color: iconColor,),
-      ),
-      title: Text(title, style: TextStyle(fontSize: 15).apply(color: textColor)),
-      trailing: endIcon? Container(
-        width: 30, height: 40,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Colors.grey.withOpacity(0.1),
+        child: Icon(
+          icon,
+          color: iconColor,
         ),
-        child: Icon(LineAwesomeIcons.angle_right, color: Colors.grey,),
-      ): null,
+      ),
+      title:
+          Text(title, style: TextStyle(fontSize: 15).apply(color: textColor)),
+      trailing: endIcon
+          ? Container(
+              width: 30,
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.grey.withOpacity(0.1),
+              ),
+              child: Icon(
+                LineAwesomeIcons.angle_right,
+                color: Colors.grey,
+              ),
+            )
+          : null,
     );
   }
 }

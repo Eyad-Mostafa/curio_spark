@@ -5,13 +5,13 @@ import '../constants/colors.dart';
 class CuriosityCard extends StatelessWidget {
   final Curiosity curiosity;
   final Function(Curiosity) onCuriosityTapped;
-  final Function(String) onDeleteCuriosity;
+  // final Function(String) onDeleteCuriosity;
 
   const CuriosityCard({
     Key? key,
     required this.curiosity,
     required this.onCuriosityTapped,
-    required this.onDeleteCuriosity,
+    //requierd this.onDeleteCuriosity,
   }) : super(key: key);
 
   @override

@@ -9,18 +9,24 @@ environment:
   flutter: "3.5.0"
 
 dependencies:
+  rxdart: ^0.27.7
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.5
   device_preview: ^1.1.0
   line_awesome_flutter: ^2.0.0
   provider: ^6.1.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.0.11
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
-
+  hive_generator: ^2.0.0
+  build_runner: ^2.3.3
+  
 flutter:
 
   uses-material-design: true
