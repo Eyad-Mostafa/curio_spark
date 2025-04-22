@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:curio_spark/screens/fav.dart';
-import 'package:curio_spark/screens/sett.dart';
 import '../model/curiosity.dart';
 import '../constants/colors.dart';
 import '../widgets/curiosity_card.dart';
@@ -61,7 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Icon(Icons.menu, color: tdBlack, size: 30),
           Container(
             height: 40,
             width: 40,
@@ -97,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: tdBGColor,
@@ -114,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         margin: const EdgeInsets.only(top: 50, bottom: 20),
                         child: const Text(
-                          'Today\'s Curiosities',
+                          'Your Curiosities',
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w500,
@@ -138,47 +136,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const sett()));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[200],
-                    minimumSize: const Size(60, 60),
-                    elevation: 5,
-                  ),
-                  child:
-                      const Icon(Icons.settings, color: Colors.black, size: 30),
-                ),
-                ElevatedButton(
-                  onPressed: () {}, // Current screen
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: tdBlue,
-                    minimumSize: const Size(60, 60),
-                    elevation: 10,
-                  ),
-                  child: const Icon(Icons.home, color: Colors.white, size: 30),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const fav()));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[200],
-                    minimumSize: const Size(60, 60),
-                    elevation: 5,
-                  ),
-                  child: const Icon(Icons.favorite,
-                      color: Color.fromARGB(255, 121, 118, 118), size: 30),
-                ),
-              ],
+          Positioned(
+            bottom: 18,
+            right: 20,
+            child: FloatingActionButton(
+              backgroundColor: tdBGColor,
+              onPressed: () {
+                // Define FAB action here
+              },
+              child: const Icon(Icons.add),
             ),
           ),
         ],
