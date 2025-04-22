@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:curio_spark/constants/colors.dart';
+import 'package:curio_spark/model/curiosity.dart';
 import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
-import '../model/curiosity.dart';
-import '../constants/colors.dart';
-import '../widgets/curiosity_card.dart';
+import 'package:curio_spark/widgets/curiosity_card.dart';
+import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,52 +12,70 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Curiosity> curiosities = [];
   List<Curiosity> filteredCuriosities = [];
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _loadCuriositiesFromHive();
+    _searchController.addListener(_runFilter);
   }
 
-  void _loadCuriositiesFromHive() {
-    final loaded = CuriosityHiveService.getAll();
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _runFilter() {
+    final query = _searchController.text.toLowerCase();
     setState(() {
-      curiosities = loaded;
-      filteredCuriosities = loaded;
+      filteredCuriosities = query.isEmpty
+          ? CuriosityHiveService.getAll()
+          : CuriosityHiveService.getAll()
+              .where((item) => item.content!.toLowerCase().contains(query))
+              .toList();
     });
   }
 
   void _handleFavoriteToggle(Curiosity curiosity) {
-    setState(() {
-      CuriosityHiveService.toggleFavorite(curiosity.id);
-    });
+    CuriosityHiveService.toggleFavorite(curiosity.id);
   }
 
-  void _deleteCuriosityById(String id) {
-    // CuriosityHiveService.deleteCuriosity(id);
-    setState(() {
-      curiosities.removeWhere((item) => item.id == id);
-      filteredCuriosities.removeWhere((item) => item.id == id);
-    });
-  }
-
-  void _runFilter(String enteredKeyword) {
-    List<Curiosity> results;
-    if (enteredKeyword.isEmpty) {
-      results = curiosities;
-    } else {
-      results = curiosities.where((item) {
-        return item.content!
-            .toLowerCase()
-            .contains(enteredKeyword.toLowerCase());
-      }).toList();
-    }
-
-    setState(() {
-      filteredCuriosities = results;
-    });
+  void _showAddCuriosityDialog(BuildContext context) {
+    final contentController = TextEditingController();
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add New Curiosity'),
+        content: TextField(
+          controller: contentController,
+          decoration: const InputDecoration(hintText: "Enter your curiosity"),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              if (contentController.text.isNotEmpty) {
+                final newCuriosity = Curiosity(
+                  id: DateTime.now().millisecondsSinceEpoch.toString(),
+                  content: contentController.text,
+                  isFavorite: false,
+                );
+                CuriosityHiveService.addCuriosity(newCuriosity);
+                Navigator.pop(context);
+              }
+            },
+            child: const Text("Add"),
+          ),
+        ],
+      ),
+    );
   }
 
   AppBar _buildAppBar() {
@@ -88,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
-        onChanged: _runFilter,
+        controller: _searchController,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.all(0),
           prefixIcon: Icon(Icons.search, color: tdBlack, size: 20),
@@ -106,55 +124,70 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: tdBGColor,
       appBar: _buildAppBar(),
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: Column(
+      body: StreamBuilder<List<Curiosity>>(
+        stream: CuriosityHiveService.curiositiesStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final curiosities = snapshot.data!;
+            if (_searchController.text.isNotEmpty) {
+              filteredCuriosities = curiosities
+                  .where((item) => item.content!
+                      .toLowerCase()
+                      .contains(_searchController.text.toLowerCase()))
+                  .toList();
+            } else {
+              filteredCuriosities = curiosities;
+            }
+
+            return Stack(
               children: [
-                searchBox(),
-                Expanded(
-                  child: ListView(
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  child: Column(
                     children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 50, bottom: 20),
-                        child: const Text(
-                          'Your Curiosities',
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      searchBox(),
+                      Expanded(
+                        child: ListView(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 50, bottom: 20),
+                              child: const Text(
+                                'Your Curiosities',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                for (Curiosity curiosity in filteredCuriosities.reversed)
+                                  CuriosityCard(
+                                    curiosity: curiosity,
+                                    onCuriosityTapped: _handleFavoriteToggle,
+                                  ),
+                              ],
+                            )
+                          ],
                         ),
                       ),
-                      Column(
-                        children: [
-                          for (Curiosity curiosity
-                              in filteredCuriosities.reversed)
-                            CuriosityCard(
-                              curiosity: curiosity,
-                              onCuriosityTapped: _handleFavoriteToggle,
-                              onDeleteCuriosity: _deleteCuriosityById,
-                            ),
-                        ],
-                      )
                     ],
                   ),
                 ),
+                Positioned(
+                  bottom: 18,
+                  right: 20,
+                  child: FloatingActionButton(
+                    backgroundColor: tdBGColor,
+                    onPressed: () => _showAddCuriosityDialog(context),
+                    child: const Icon(Icons.add),
+                  ),
+                ),
               ],
-            ),
-          ),
-          Positioned(
-            bottom: 18,
-            right: 20,
-            child: FloatingActionButton(
-              backgroundColor: tdBGColor,
-              onPressed: () {
-                // Define FAB action here
-              },
-              child: const Icon(Icons.add),
-            ),
-          ),
-        ],
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }

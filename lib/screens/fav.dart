@@ -1,10 +1,8 @@
+import 'package:curio_spark/model/curiosity.dart';
 import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
 import 'package:flutter/material.dart';
-import '../model/curiosity.dart';
 import '../constants/colors.dart';
 import '../widgets/curiosity_card.dart';
-import 'dart:ui';
-
 
 class FavScreen extends StatefulWidget {
   const FavScreen({Key? key}) : super(key: key);
@@ -14,46 +12,22 @@ class FavScreen extends StatefulWidget {
 }
 
 class _FavScreenState extends State<FavScreen> {
-final List<Curiosity> curiosities = Curiosity.curiosities.where((e)=> e.isFavorite == true).toList();
-List<Curiosity> filteredCuriosities = [];
-  // final List<Curiosity> curiosities = Curiosity.sampleData();
-  // List<Curiosity> filteredCuriosities = [];
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
-    filteredCuriosities = curiosities;
     super.initState();
+    _searchController.addListener(_runFilter);
   }
 
-  void _handleFavoriteToggle(Curiosity curiosity) {
-    setState(() {
-      curiosity.isFavorite = !curiosity.isFavorite;
-    });
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
-  void _deleteCuriosityById(String id) {
-    setState(() {
-      curiosities.removeWhere((item) => item.id == id);
-      filteredCuriosities.removeWhere((item) => item.id == id);
-    });
-  }
-
-  void _runFilter(String enteredKeyword) {
-    List<Curiosity> results = [];
-
-    if (enteredKeyword.isEmpty) {
-      results = curiosities;
-    } else {
-      results = curiosities.where((item) {
-        return item.content!
-            .toLowerCase()
-            .contains(enteredKeyword.toLowerCase());
-      }).toList();
-    }
-
-    setState(() {
-      filteredCuriosities = results;
-    });
+  void _runFilter() {
+    setState(() {}); // Just triggers rebuild to apply search filter
   }
 
   AppBar _buildAppBar() {
@@ -84,7 +58,7 @@ List<Curiosity> filteredCuriosities = [];
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
-        onChanged: _runFilter,
+        controller: _searchController,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.all(0),
           prefixIcon: Icon(Icons.search, color: tdBlack, size: 20),
@@ -98,62 +72,105 @@ List<Curiosity> filteredCuriosities = [];
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: tdBGColor,
       appBar: _buildAppBar(),
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: Column(
+      body: StreamBuilder<List<Curiosity>>(
+        stream: CuriosityHiveService.curiositiesStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // Apply both favorite and search filters
+          final filtered = snapshot.data!
+              .where((c) => c.isFavorite)
+              .where((c) =>
+                  _searchController.text.isEmpty ||
+                  (c.content?.toLowerCase().contains(
+                            _searchController.text.toLowerCase(),
+                          ) ??
+                      false))
+              .toList();
+
+          if (filtered.isEmpty) {
+            final isEmptySearch = _searchController.text.isEmpty;
+            return Column(
               children: [
                 searchBox(),
                 Expanded(
-                  child: ListView(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 50, bottom: 20),
-                        child: const Text(
-                          'Favourites',
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          for (Curiosity curiosity
-                              in filteredCuriosities.reversed)
-                            CuriosityCard(
-                              curiosity: curiosity,
-                              onCuriosityTapped: _handleFavoriteToggle,
-                              onDeleteCuriosity: _deleteCuriosityById,
-                            ),
-                        ],
-                      )
-                    ],
+                  child: Center(
+                    child: Text(
+                      isEmptySearch
+                          ? 'No favorites yet'
+                          : 'No matching favorites',
+                      style: const TextStyle(fontSize: 18),
+                    ),
                   ),
                 ),
               ],
-            ),
-          ),
-          Positioned(
-            bottom: 18,
-            right: 20,
-            child: FloatingActionButton(
-              backgroundColor: tdBGColor,
-              onPressed: () {
-                // Define FAB action here
-              },
-              child: const Icon(Icons.add),
-            ),
-          ),
-        ],
+            );
+          }
+
+          return Stack(
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                child: Column(
+                  children: [
+                    searchBox(),
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 50, bottom: 20),
+                            child: const Text(
+                              'Favorites',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              for (Curiosity curiosity in filtered.reversed)
+                                CuriosityCard(
+                                  curiosity: curiosity,
+                                  onCuriosityTapped: (curio) =>
+                                      CuriosityHiveService.toggleFavorite(
+                                          curio.id),
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (_searchController.text.isEmpty)
+                Positioned(
+                  bottom: 18,
+                  right: 20,
+                  child: FloatingActionButton(
+                    backgroundColor: tdBGColor,
+                    onPressed: () {
+                      // Your FAB action
+                    },
+                    child: const Icon(Icons.add),
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
 }
-

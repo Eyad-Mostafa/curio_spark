@@ -9,6 +9,7 @@ environment:
   flutter: "3.5.0"
 
 dependencies:
+  rxdart: ^0.27.7
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.5
