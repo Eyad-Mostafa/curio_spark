@@ -1,19 +1,22 @@
+import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
 import 'package:flutter/material.dart';
 import '../model/curiosity.dart';
 import '../constants/colors.dart';
 import '../widgets/curiosity_card.dart';
 import 'dart:ui';
 
+final List<Curiosity> curiosities = Curiosity.curiosities;
+List<Curiosity> filteredCuriosities = [];
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+  
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Curiosity> curiosities = Curiosity.sampleData();
-  List<Curiosity> filteredCuriosities = [];
 
   @override
   void initState() {
@@ -23,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _handleFavoriteToggle(Curiosity curiosity) {
     setState(() {
-      curiosity.isFavorite = !curiosity.isFavorite;
+      CuriosityHiveService.toggleFavorite(curiosity.id);
     });
   }
 

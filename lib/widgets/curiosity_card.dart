@@ -29,7 +29,7 @@ class CuriosityCard extends StatelessWidget {
         tileColor: Colors.white,
         title: Text(
           curiosity.content ?? '',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
             color: tdBlack,
           ),
