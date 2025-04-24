@@ -122,14 +122,17 @@ class _DropdownBtnState extends State<DropdownBtn> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
+    return Container(
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+  ),
+    child:  DropdownButton<String>(
       value: dropdownValue,
-      icon: const Icon(Icons.arrow_downward),
+      icon: Icon(Icons.arrow_downward),
       elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
-      underline: Container(height: 2, color: Colors.deepPurpleAccent),
+      style: Theme.of(context).textTheme.bodyLarge, 
+      underline: Container(height: 2,),
       onChanged: (String? value) {
-        // This is called when the user selects an item.
         setState(() {
           dropdownValue = value!;
         });
@@ -138,6 +141,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
           list.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(value: value, child: Text(value));
           }).toList(),
+      )
     );
   }
 }

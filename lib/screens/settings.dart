@@ -7,6 +7,7 @@ import 'package:curio_spark/screens/updateProfile.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -49,6 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       child: Icon(
                         Icons.edit,
+                        color: Colors.black,
                       ),
                     ),
                   )
@@ -76,10 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SizedBox(width: 30,),
               Divider(),
               SizedBox(width: 10,),
-              SettingsMenu(
-                  title: "Notifications",
-                  icon: Icons.notifications,
-                  onPress: () {}),
+              NotificationSettings(),
               SettingsMenu(
                   title: "Help",
                   icon: Icons.help_outline,
@@ -158,6 +157,58 @@ class SettingsMenu extends StatelessWidget {
               ),
             )
           : null,
+    );
+  }
+}
+
+class NotificationSettings extends StatefulWidget {
+  const NotificationSettings({super.key});
+
+  @override
+  State<NotificationSettings> createState() => _NotificationSettingsState();
+}
+
+class _NotificationSettingsState extends State<NotificationSettings> {
+  bool _notificationsOn = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotificationPreference();
+  }
+
+  Future<void> _loadNotificationPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _notificationsOn = prefs.getBool('notifications_on') ?? true;
+    });
+  }
+
+  Future<void> _toggleNotification(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _notificationsOn = value;
+    });
+    await prefs.setBool('notifications_on', value);
+
+    // 🔔 Optional: Show a snackbar or perform notification logic
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(value ? 'Notifications Enabled' : 'Notifications Disabled'),
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.notifications, color: Theme.of(context).iconTheme.color,),
+      title: Text('Notifications'),
+      trailing: Switch(
+        value: _notificationsOn,
+        onChanged:_toggleNotification,
+      ),
     );
   }
 }
