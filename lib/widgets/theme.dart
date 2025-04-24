@@ -46,7 +46,7 @@ class ThemeProvider extends ChangeNotifier {
         prefixIconColor: Color(0xFF120239),
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
-          backgroundColor: Colors.grey[900], // Dropdown menu background color
+          // backgroundColor: Colors.grey[900], // Dropdown menu background color
           textStyle: TextStyle(color: Colors.white), // Text color in the dropdown menu
         ),
       );
