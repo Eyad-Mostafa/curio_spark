@@ -23,12 +23,12 @@ void main() async {
 
   // Initialize Hive service and load sample data
   CuriosityHiveService.init();
-  final box = Hive.box<Curiosity>('curiosities');
-  if (box.isEmpty) {
-    for (var item in Curiosity.sampleData()) {
-      await CuriosityHiveService.addCuriosity(item);
-    }
-  }
+  // final box = Hive.box<Curiosity>('curiosities');
+  // if (box.isEmpty) {
+  //   for (var item in Curiosity.sampleData()) {
+  //     await CuriosityHiveService.addCuriosity(item);
+  //   }
+  // }
 
   runApp(
     DevicePreview(
