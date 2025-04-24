@@ -46,8 +46,7 @@ class ThemeProvider extends ChangeNotifier {
         prefixIconColor: Color(0xFF120239),
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
-          // backgroundColor: Colors.grey[900], // Dropdown menu background color
-          textStyle: TextStyle(color: Colors.white), // Text color in the dropdown menu
+          textStyle: TextStyle(color: Color(0xFF120239)),
         ),
       );
 
@@ -80,6 +79,9 @@ class ThemeProvider extends ChangeNotifier {
           ),
         prefixIconColor: Color(0xFFa580ca),
       ),
+      dropdownMenuTheme: DropdownMenuThemeData(
+          textStyle: TextStyle(color: Color(0xFFa580ca)),
+        ),
         appBarTheme: AppBarTheme(
           backgroundColor:  Color(0xFF080121),
           iconTheme: IconThemeData(color: Color(0xFFa580ca)),
