@@ -3,6 +3,7 @@ import 'package:curio_spark/model/curiosity.dart';
 import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
 import 'package:curio_spark/widgets/curiosity_card.dart';
 import 'package:flutter/material.dart';
+import 'package:curio_spark/services/gemini_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _showAddCuriosityDialog(BuildContext context) {
     final contentController = TextEditingController();
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -72,6 +73,24 @@ class _HomeScreenState extends State<HomeScreen> {
               }
             },
             child: const Text("Add"),
+          ),
+          // temporary test button
+          ElevatedButton(
+            onPressed: () async {
+              final success = await CuriosityGeneratorService
+                  .generateAndSaveUniqueCuriosity();
+              if (success) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("✅ New curiosity added!")),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content: Text("⚠️ Could not fetch a new curiosity.")),
+                );
+              }
+            },
+            child: Text("Get AI Curiosity"),
           ),
         ],
       ),
@@ -142,7 +161,8 @@ class _HomeScreenState extends State<HomeScreen> {
             return Stack(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   child: Column(
                     children: [
                       searchBox(),
@@ -150,7 +170,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: ListView(
                           children: [
                             Container(
-                              margin: const EdgeInsets.only(top: 50, bottom: 20),
+                              margin:
+                                  const EdgeInsets.only(top: 50, bottom: 20),
                               child: const Text(
                                 'Your Curiosities',
                                 style: TextStyle(
@@ -161,7 +182,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Column(
                               children: [
-                                for (Curiosity curiosity in filteredCuriosities.reversed)
+                                for (Curiosity curiosity
+                                    in filteredCuriosities.reversed)
                                   CuriosityCard(
                                     curiosity: curiosity,
                                     onCuriosityTapped: _handleFavoriteToggle,
