@@ -10,15 +10,4 @@ const Color tdBGColor = Color(0xFFEEEFF5);
 
 
 String tProfileImage = 'bugs-bunny-wallpaper.jpg';
-const Color tPrimary = Colors.amber;
-const Color tArrow = Colors.grey;
-const Color bgButton = Colors.purpleAccent;
-//text button color
-const Color tBColor =Colors.black;
-//dark icon color
-const Color dIColor = Colors.blueAccent;
-//light icon color
-const Color lIColor = Colors.purpleAccent;
-
-//textField color
-const Color tFColor = Colors.grey;
+const Color editIcon = Colors.amberAccent;

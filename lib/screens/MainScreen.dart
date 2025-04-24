@@ -1,7 +1,9 @@
 import 'package:curio_spark/screens/fav.dart';
 import 'package:curio_spark/screens/home.dart';
 import 'package:curio_spark/screens/settings.dart';
+import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/colors.dart';
 
@@ -29,7 +31,18 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () => themeProvider.toggleTheme(),
+            icon: Icon(isDark ? Icons.wb_sunny : Icons.shield_moon, color: Theme.of(context).iconTheme.color),
+          )
+        ],
+      ),
       body: IndexedStack(
         index: _selectedIndex,
         children: _screens,

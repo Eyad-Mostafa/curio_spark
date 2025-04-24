@@ -2,8 +2,9 @@
 import 'package:curio_spark/constants/colors.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+
+const List<String> list = ["Male", "Female"];
 
 class UpdateProfileScreen extends StatelessWidget {
   UpdateProfileScreen({super.key});
@@ -17,17 +18,14 @@ class UpdateProfileScreen extends StatelessWidget {
     
     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     final themeProvider = Provider.of<ThemeProvider>(context);
-    var iconColor = isDark? dIColor: lIColor;
+    var iconColor = Theme.of(context).iconTheme.color;
 
     return Scaffold(
             appBar: AppBar(
-          title: Text("Edit Profile", style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          )),
+          title: Text("Edit Profile"),
         actions: [IconButton(
           onPressed: () => themeProvider.toggleTheme(), 
-          icon: Icon(isDark? LineAwesomeIcons.sun : LineAwesomeIcons.moon),
+          icon: Icon(isDark?  Icons.wb_sunny : Icons.shield_moon),
           )],
         ),
         body:Padding(
@@ -55,10 +53,10 @@ class UpdateProfileScreen extends StatelessWidget {
                                 width: 35, height: 35,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(100),
-                                  color: tPrimary,
+                                  color: editIcon,
                                 ),
                         child: Icon(
-                          LineAwesomeIcons.camera, 
+                          Icons.photo_camera, 
                           color: Colors.black,),
                       ),
                     )
@@ -77,108 +75,17 @@ class UpdateProfileScreen extends StatelessWidget {
                       }
                       return null;
                     },
-
                     controller: usernameController,
-
                     obscureText: false,
                     decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: tFColor,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color:tFColor,
-                        )
-                      ),
                       labelText: "Username",
-                      labelStyle: TextStyle(fontSize: 14,color:tFColor),
                       prefixIcon: Icon(color: iconColor, Icons.person),
                     ),
                     keyboardType: TextInputType.text,
                   ),
-                  // SizedBox(height: 20,),
-
-                  //////////////////email///////////////////
                   Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
-                  TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      } 
-                      else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                        return 'Enter a valid email';
-                      }
-                      return null;
-                    },
-
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: tFColor,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color:tFColor,
-                        )
-                      ),
-                      labelText: "Email",
-                      labelStyle: TextStyle(fontSize: 14,color:tFColor),
-                      prefixIcon: Icon(color: iconColor, Icons.email),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  // SizedBox(height: 20,),
-
-                  /////////////////password/////////////////////
-                  Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
-                  TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                      return 'Password must be longer than 6 characters';
-                      }
-                      if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                      return 'Uppercase letter is missing';
-                      }
-                      if (!value.contains(RegExp(r'[a-z]'))) {
-                      return 'Lowercase letter is missing';
-                      }
-                      if (!value.contains(RegExp(r'[0-9]'))) {
-                      return 'Digit is missing';
-                      }
-                      if (!value.contains(RegExp(r'[!@#%^&*(),.?":{}|<>]'))) {
-                      return 'Special character is missing';
-                      }
-                      return null;
-                    },
-
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: "password",
-                      labelStyle: TextStyle(fontSize: 14,color:tFColor),
-                      prefixIcon: Icon(color: iconColor, Icons.lock),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: tFColor,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color:tFColor,
-                        )
-                      ),
-                    ),
-                    keyboardType: TextInputType.text,
-                  ),
+                  
+                  DropdownBtn(),
 
                   Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
                   SizedBox(
@@ -191,17 +98,7 @@ class UpdateProfileScreen extends StatelessWidget {
                       ))).then((value)=>usernameController.clear());
                     }
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: bgButton, side: BorderSide.none, shape: StadiumBorder(),
-                      ),
-                    child: Text("Edit",
-                    style: TextStyle(
-                      color: tBColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold
-                    ),
-                    ///////////////we need change fontFamily/////////////
-                    ),
+                    child: Text("Save",),
                     ),
                   ),
                 ],
@@ -212,4 +109,37 @@ class UpdateProfileScreen extends StatelessWidget {
         );
   }
 }
+
+class DropdownBtn extends StatefulWidget {
+  const DropdownBtn({super.key});
+
+  @override
+  State<DropdownBtn> createState() => _DropdownBtnState();
+}
+
+class _DropdownBtnState extends State<DropdownBtn> {
+  String dropdownValue = list.first;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      icon: const Icon(Icons.arrow_downward),
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(height: 2, color: Colors.deepPurpleAccent),
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          dropdownValue = value!;
+        });
+      },
+      items:
+          list.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(value: value, child: Text(value));
+          }).toList(),
+    );
+  }
+}
+
 
