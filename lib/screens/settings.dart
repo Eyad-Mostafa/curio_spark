@@ -6,7 +6,6 @@ import 'package:hive/hive.dart';
 import 'package:curio_spark/screens/updateProfile.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -23,19 +22,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Settings",
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            )),
-        actions: [
-          IconButton(
-            onPressed: () => themeProvider.toggleTheme(),
-            icon: Icon(isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon),
-          )
-        ],
-      ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(20),
@@ -59,91 +45,59 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       height: 35,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
-                        color: tPrimary,
+                        color: editIcon,
                       ),
                       child: Icon(
-                        LineAwesomeIcons.alternate_pencil,
-                        color: Colors.black,
+                        Icons.edit,
                       ),
                     ),
                   )
                 ],
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10,),
               Text("welcome mr.",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                   )),
               /////////we need display name and some details alternate welcome///////////////
+              SizedBox(height: 20,),
               SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                width: 200,
-                height: 40,
+                width: 200, height: 40,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => UpdateProfileScreen()));
+                        MaterialPageRoute(builder: (context) => UpdateProfileScreen()));
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: bgButton,
-                    side: BorderSide.none,
-                    shape: StadiumBorder(),
-                  ),
-                  child: Text(
-                    "Edit Profile",
-                    style: TextStyle(
-                        color: tBColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    ///////////////we need change fontFamily/////////////
-                  ),
+                  child: Text("Edit Profile",),
                 ),
               ),
-              SizedBox(
-                width: 30,
-              ),
+              SizedBox(width: 30,),
               Divider(),
-              SizedBox(
-                width: 10,
-              ),
-
-              ProfileMenu(
+              SizedBox(width: 10,),
+              SettingsMenu(
                   title: "Notifications",
-                  icon: LineAwesomeIcons.bell,
+                  icon: Icons.notifications,
                   onPress: () {}),
-              ProfileMenu(
+              SettingsMenu(
                   title: "Help",
-                  icon: LineAwesomeIcons.question_circle,
+                  icon: Icons.help_outline,
                   onPress: () {}),
-              ProfileMenu(
+              SettingsMenu(
                   title: "About",
-                  icon: LineAwesomeIcons.exclamation_circle,
+                  icon: Icons.info_outline,
                   onPress: () {}),
               Divider(),
+              SizedBox(height: 10,),
               SizedBox(
-                height: 10,
-              ),
-              ProfileMenu(
-                title: "Reset",
-                textColor: Colors.red,
-                endIcon: false,
-                icon: LineAwesomeIcons.alternate_sign_out,
-                onPress: () async {
-                  final box = Hive.box<Curiosity>('curiosities');
-                  await box.clear();
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Data cleared.")),
-                  );
-                },
-              ),
+                  width: 200, height: 40,
+                  child: ElevatedButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateProfileScreen()));
+                  },
+                  child: Text("Restart Progress",),
+                  ),
+                ),
             ],
           ),
         ),
@@ -152,43 +106,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 }
 
-class ProfileMenu extends StatelessWidget {
-  const ProfileMenu({
+class SettingsMenu extends StatelessWidget {
+  const SettingsMenu({
     Key? key,
     required this.title,
     required this.icon,
     required this.onPress,
     this.endIcon = true,
-    this.textColor,
   }) : super(key: key);
 
   final String title;
   final IconData icon;
   final VoidCallback onPress;
   final bool endIcon;
-  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
-    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    var iconColor = isDark ? dIColor : lIColor;
+    var iconColor = Theme.of(context).iconTheme.color;
 
     return ListTile(
       onTap: onPress,
       leading: Container(
-        width: 30,
-        height: 40,
+        width: 30, height: 40,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: tArrow.withOpacity(0.1),
+          color: Theme.of(context).iconTheme.color?.withOpacity(0.1) ?? Colors.grey.withOpacity(0.1),
         ),
         child: Icon(
           icon,
           color: iconColor,
         ),
       ),
-      title:
-          Text(title, style: TextStyle(fontSize: 15).apply(color: textColor)),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 15,
+          color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black,
+        ),
+      ),
       trailing: endIcon
           ? Container(
               width: 30,
@@ -198,8 +153,8 @@ class ProfileMenu extends StatelessWidget {
                 color: Colors.grey.withOpacity(0.1),
               ),
               child: Icon(
-                LineAwesomeIcons.angle_right,
-                color: Colors.grey,
+                Icons.navigate_next,
+                color: iconColor,
               ),
             )
           : null,
