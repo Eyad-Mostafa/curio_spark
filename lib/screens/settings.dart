@@ -1,4 +1,5 @@
 import 'package:curio_spark/constants/colors.dart';
+import 'package:curio_spark/screens/about.dart';
 import 'package:curio_spark/screens/updateProfile.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: EdgeInsets.all(20),
           child: Column(
             children: [
+              Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
               //Image
               Stack(
                 children: [
@@ -76,14 +78,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Divider(),
               SizedBox(width: 10,),
               NotificationSettings(),
-              SettingsMenu(
-                  title: "Help",
-                  icon: Icons.help_outline,
-                  onPress: () {}),
+              ListTile(
+                leading: Icon(isDark ? Icons.wb_sunny : Icons.shield_moon, color: Theme.of(context).iconTheme.color),
+                title: Text('Dark Mode'),
+                trailing: Switch(
+                  value: isDark,
+                  onChanged: (value){
+                    themeProvider.toggleTheme();
+                  }
+                ),
+              ),
               SettingsMenu(
                   title: "About",
                   icon: Icons.info_outline,
-                  onPress: () {}),
+                  onPress:()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> AboutScreen()))
+              ),
               Divider(),
               SizedBox(height: 10,),
               SizedBox(
@@ -135,9 +144,8 @@ class SettingsMenu extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
           fontSize: 15,
-          color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black,
         ),
       ),
       trailing: endIcon

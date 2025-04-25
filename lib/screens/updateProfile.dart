@@ -1,5 +1,6 @@
 
 import 'package:curio_spark/constants/colors.dart';
+import 'package:curio_spark/screens/settings.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -86,14 +87,13 @@ class UpdateProfileScreen extends StatelessWidget {
                   Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
                   
                   DropdownBtn(),
-
                   Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
                   SizedBox(
                     width: 200,
                     height: 40,
                     child: ElevatedButton(onPressed: (){
                       if (_formKey.currentState!.validate()){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateProfileScreen(
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsScreen(
                         // userName: usernameController.text,
                       ))).then((value)=>usernameController.clear());
                     }
