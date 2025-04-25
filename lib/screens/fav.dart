@@ -32,7 +32,6 @@ class _FavScreenState extends State<FavScreen> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: tdBGColor,
       elevation: 0,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,7 +53,6 @@ class _FavScreenState extends State<FavScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
@@ -74,7 +72,6 @@ class _FavScreenState extends State<FavScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: tdBGColor,
       appBar: _buildAppBar(),
       body: StreamBuilder<List<Curiosity>>(
         stream: CuriosityHiveService.curiositiesStream,
@@ -146,6 +143,7 @@ class _FavScreenState extends State<FavScreen> {
                                   onCuriosityTapped: (curio) =>
                                       CuriosityHiveService.toggleFavorite(
                                           curio.id),
+                                  onDismissed: (Curiosity) {},
                                 ),
                             ],
                           ),
@@ -155,18 +153,6 @@ class _FavScreenState extends State<FavScreen> {
                   ],
                 ),
               ),
-              if (_searchController.text.isEmpty)
-                Positioned(
-                  bottom: 18,
-                  right: 20,
-                  child: FloatingActionButton(
-                    backgroundColor: tdBGColor,
-                    onPressed: () {
-                      // Your FAB action
-                    },
-                    child: const Icon(Icons.add),
-                  ),
-                ),
             ],
           );
         },

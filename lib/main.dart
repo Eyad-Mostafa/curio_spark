@@ -1,5 +1,6 @@
 import 'package:curio_spark/model/profile.dart';
 import 'package:curio_spark/screens/MainScreen.dart';
+import 'package:curio_spark/screens/splashscreen.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
       useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
       title: 'CurioSpark',
-      home: const MainScreen(),
+      home: SplashScreen(),
 
       theme: themeProvider.lightTheme,
       darkTheme: themeProvider.darkTheme,
