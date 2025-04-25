@@ -1,8 +1,4 @@
 import 'package:curio_spark/constants/colors.dart';
-import 'package:curio_spark/model/curiosity.dart';
-import 'package:curio_spark/screens/fav.dart';
-import 'package:curio_spark/screens/home.dart';
-import 'package:hive/hive.dart';
 import 'package:curio_spark/screens/updateProfile.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/material.dart';

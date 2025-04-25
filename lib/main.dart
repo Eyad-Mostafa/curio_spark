@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import './screens/home.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:curio_spark/model/curiosity.dart';
@@ -20,15 +19,8 @@ void main() async {
 
   await Hive.openBox<Profile>('profiles');
   await Hive.openBox<Curiosity>('curiosities');
-
-  // Initialize Hive service and load sample data
   CuriosityHiveService.init();
-  // final box = Hive.box<Curiosity>('curiosities');
-  // if (box.isEmpty) {
-  //   for (var item in Curiosity.sampleData()) {
-  //     await CuriosityHiveService.addCuriosity(item);
-  //   }
-  // }
+
 
   runApp(
     DevicePreview(
