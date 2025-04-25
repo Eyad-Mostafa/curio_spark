@@ -35,15 +35,6 @@ class _MainScreenState extends State<MainScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () => themeProvider.toggleTheme(),
-            icon: Icon(isDark ? Icons.wb_sunny : Icons.shield_moon,
-                color: Theme.of(context).iconTheme.color),
-          )
-        ],
-      ),
       body: IndexedStack(
         index: _selectedIndex,
         children: _screens,

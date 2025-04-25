@@ -17,6 +17,11 @@ class ThemeProvider extends ChangeNotifier {
         primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: Color(0xFFEDE6F4),
         iconTheme: IconThemeData(color: Color(0xFF120239)),
+        textTheme: TextTheme(
+          headlineMedium: TextStyle(fontSize: 32, color: Color(0xFF120239)),
+          bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF120239)),
+          titleLarge: TextStyle(fontSize: 22, color: Color(0xFF120239)),
+        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: Color(0xFF260656),
@@ -48,6 +53,14 @@ class ThemeProvider extends ChangeNotifier {
       dropdownMenuTheme: DropdownMenuThemeData(
           textStyle: TextStyle(color: Color(0xFF120239)),
         ),
+        cardTheme: CardTheme(
+          color: Colors.white,
+          elevation: 6,
+          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
       );
 
   // Dark theme definition
@@ -56,6 +69,11 @@ class ThemeProvider extends ChangeNotifier {
         primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: Color(0xFF080121),
         iconTheme: IconThemeData(color: Color(0xFFa580ca)),
+        textTheme: TextTheme(
+          headlineMedium: TextStyle(fontSize: 32, color: Color(0xFFEDE6F4)),
+          bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF120239)),
+          titleLarge: TextStyle(fontSize: 22, color: Color(0xFFEDE6F4)),
+        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: Color(0xFFa580ca),
@@ -86,6 +104,14 @@ class ThemeProvider extends ChangeNotifier {
           backgroundColor:  Color(0xFF080121),
           iconTheme: IconThemeData(color: Color(0xFFa580ca)),
           titleTextStyle: TextStyle(color: Color(0xFFa580ca), fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        cardTheme: CardTheme(
+          color: Color(0xFFa580ca),
+          elevation: 6,
+          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
         ),
       );
 }
