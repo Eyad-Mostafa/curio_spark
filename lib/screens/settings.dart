@@ -6,6 +6,7 @@ import 'package:curio_spark/constants/colors.dart';
 import 'package:curio_spark/screens/about.dart';
 import 'package:curio_spark/screens/updateProfile.dart';
 import 'package:curio_spark/widgets/theme.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -209,6 +210,15 @@ class SettingsMenu extends StatelessWidget {
   }
 }
 
+Future<void> _requestNotificationPermission() async {
+  PermissionStatus status = await Permission.notification.request();
+  if (status.isGranted) {
+    // Permission granted, proceed to show notifications
+  } else {
+    // Handle permission denial
+  }
+}
+
 /// NOTIFICATIONS
 class NotificationSettings extends StatefulWidget {
   const NotificationSettings({super.key});
@@ -231,7 +241,8 @@ class _NotificationSettingsState extends State<NotificationSettings> {
 
   Future<void> _initializeNotificationPlugin() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
+        AndroidInitializationSettings(
+            'better'); // Ensure app_icon exists in your resources
     final InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
