@@ -4,6 +4,9 @@ import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
 import 'package:curio_spark/widgets/curiosity_card.dart';
 import 'package:flutter/material.dart';
 import 'package:curio_spark/services/gemini_service.dart';
+import 'package:curio_spark/widgets/speech_input.dart';
+
+final speechInputKey = GlobalKey<SpeechInputState>();
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -50,14 +53,34 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Add New Curiosity'),
-        content: TextField(
-          controller: contentController,
-          decoration: const InputDecoration(hintText: "Enter your curiosity"),
-          autofocus: true,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: contentController,
+              decoration:
+                  const InputDecoration(hintText: "Enter your curiosity"),
+              autofocus: true,
+            ),
+            const SizedBox(height: 16),
+            // 🔊 Add SpeechInput widget here
+            SpeechInput(
+              key: speechInputKey,
+              onResult: (text) {
+                contentController.text = text;
+                contentController.selection = TextSelection.fromPosition(
+                  TextPosition(offset: text.length),
+                );
+              },
+            ),
+          ],
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              speechInputKey.currentState?.stopListening();
+              Navigator.pop(context);
+            },
             child: const Text("Cancel"),
           ),
           TextButton(
@@ -69,12 +92,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   isFavorite: false,
                 );
                 CuriosityHiveService.addCuriosity(newCuriosity);
+                speechInputKey.currentState?.stopListening();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("✅ Curiosity added!")),
+                );
                 Navigator.pop(context);
               }
             },
             child: const Text("Add"),
           ),
-          // temporary test button
           ElevatedButton(
             onPressed: () async {
               final success = await CuriosityGeneratorService
@@ -90,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
             },
-            child: Text("Get AI Curiosity"),
+            child: const Text("Get AI Curiosity"),
           ),
         ],
       ),
