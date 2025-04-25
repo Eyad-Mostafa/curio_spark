@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:curio_spark/constants/colors.dart';
 import 'package:curio_spark/screens/about.dart';
 import 'package:curio_spark/screens/updateProfile.dart';
@@ -77,7 +76,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SizedBox(width: 10),
 
               /// Notifications and Dark Mode
-              // NotificationSettings(),
+              NotificationSettings(),
               DarkModeSettings(),
 
               SettingsMenu(
@@ -211,97 +210,97 @@ class SettingsMenu extends StatelessWidget {
 }
 
 /// NOTIFICATIONS
-// class NotificationSettings extends StatefulWidget {
-//   const NotificationSettings({super.key});
+class NotificationSettings extends StatefulWidget {
+  const NotificationSettings({super.key});
 
-//   @override
-//   State<NotificationSettings> createState() => _NotificationSettingsState();
-// }
+  @override
+  State<NotificationSettings> createState() => _NotificationSettingsState();
+}
 
-// class _NotificationSettingsState extends State<NotificationSettings> {
-//   bool _notificationsOn = true;
-//   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
-//       FlutterLocalNotificationsPlugin();
+class _NotificationSettingsState extends State<NotificationSettings> {
+  bool _notificationsOn = true;
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _loadNotificationPreference();
-//     _initializeNotificationPlugin();
-//   }
+  @override
+  void initState() {
+    super.initState();
+    _loadNotificationPreference();
+    _initializeNotificationPlugin();
+  }
 
-//   Future<void> _initializeNotificationPlugin() async {
-//     const AndroidInitializationSettings initializationSettingsAndroid =
-//         AndroidInitializationSettings('app_icon');
-//     final InitializationSettings initializationSettings =
-//         InitializationSettings(
-//       android: initializationSettingsAndroid,
-//     );
+  Future<void> _initializeNotificationPlugin() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
 
-//     await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
-//   }
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
 
-//   Future<void> _loadNotificationPreference() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     setState(() {
-//       _notificationsOn = prefs.getBool('notifications_on') ?? true;
-//     });
-//   }
+  Future<void> _loadNotificationPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _notificationsOn = prefs.getBool('notifications_on') ?? true;
+    });
+  }
 
-//   Future<void> _toggleNotification(bool value) async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     setState(() {
-//       _notificationsOn = value;
-//     });
-//     await prefs.setBool('notifications_on', value);
+  Future<void> _toggleNotification(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _notificationsOn = value;
+    });
+    await prefs.setBool('notifications_on', value);
 
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(
-//         content:
-//             Text(value ? 'Notifications Enabled' : 'Notifications Disabled'),
-//         duration: Duration(seconds: 1),
-//       ),
-//     );
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content:
+            Text(value ? 'Notifications Enabled' : 'Notifications Disabled'),
+        duration: Duration(seconds: 1),
+      ),
+    );
 
-//     if (value) {
-//       _showNotification();
-//     }
-//   }
+    if (value) {
+      _showNotification();
+    }
+  }
 
-//   // Future<void> _showNotification() async {
-//   //   const AndroidNotificationDetails androidDetails =
-//   //       AndroidNotificationDetails(
-//   //     'channel_id',
-//   //     'channel_name',
-//   //     channelDescription: 'Channel for notification settings',
-//   //     importance: Importance.high,
-//   //     priority: Priority.high,
-//   //   );
+  Future<void> _showNotification() async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'channel_id',
+      'channel_name',
+      channelDescription: 'Channel for notification settings',
+      importance: Importance.high,
+      priority: Priority.high,
+    );
 
-//   //   const NotificationDetails platformDetails =
-//   //       NotificationDetails(android: androidDetails);
+    const NotificationDetails platformDetails =
+        NotificationDetails(android: androidDetails);
 
-//   //   await _flutterLocalNotificationsPlugin.show(
-//   //     0,
-//   //     'Notification Enabled',
-//   //     'You will now receive notifications.',
-//   //     platformDetails,
-//   //   );
-//   // }
+    await _flutterLocalNotificationsPlugin.show(
+      0,
+      'Notification Enabled',
+      'You will now receive notifications.',
+      platformDetails,
+    );
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListTile(
-//       leading:
-//           Icon(Icons.notifications, color: Theme.of(context).iconTheme.color),
-//       title: Text('Notifications'),
-//       trailing: Switch(
-//         value: _notificationsOn,
-//         onChanged: _toggleNotification,
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading:
+          Icon(Icons.notifications, color: Theme.of(context).iconTheme.color),
+      title: Text('Notifications'),
+      trailing: Switch(
+        value: _notificationsOn,
+        onChanged: _toggleNotification,
+      ),
+    );
+  }
+}
 
 /// DARK MODE
 class DarkModeSettings extends StatefulWidget {
