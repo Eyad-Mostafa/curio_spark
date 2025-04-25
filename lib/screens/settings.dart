@@ -4,7 +4,8 @@ import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -156,7 +157,6 @@ class SettingsMenu extends StatelessWidget {
     );
   }
 }
-
 class NotificationSettings extends StatefulWidget {
   const NotificationSettings({super.key});
 
@@ -167,10 +167,24 @@ class NotificationSettings extends StatefulWidget {
 class _NotificationSettingsState extends State<NotificationSettings> {
   bool _notificationsOn = true;
 
+  FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   @override
   void initState() {
     super.initState();
     _loadNotificationPreference();
+    _initializeNotificationPlugin();
+  }
+
+  Future<void> _initializeNotificationPlugin() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
   Future<void> _loadNotificationPreference() async {
@@ -187,23 +201,49 @@ class _NotificationSettingsState extends State<NotificationSettings> {
     });
     await prefs.setBool('notifications_on', value);
 
-    // 🔔 Optional: Show a snackbar or perform notification logic
+    // Show a snackbar indicating notification preference change
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(value ? 'Notifications Enabled' : 'Notifications Disabled'),
         duration: Duration(seconds: 1),
       ),
     );
+
+    // Trigger a notification if the user enables notifications
+    if (value) {
+      _showNotification();
+    }
   }
+
+  Future<void> _showNotification() async {
+    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      'channel_id',
+      'channel_name',
+      channelDescription: 'Channel for notification settings',
+      importance: Importance.high,
+      priority: Priority.high,
+    );
+
+    const NotificationDetails platformDetails =
+        NotificationDetails(android: androidDetails);
+
+    await _flutterLocalNotificationsPlugin.show(
+      0,
+      'Notification Enabled',
+      'You will now receive notifications.',
+      platformDetails,
+    );
+  }
+
   
-  @override
+@override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.notifications, color: Theme.of(context).iconTheme.color,),
+      leading: Icon(Icons.notifications, color: Theme.of(context).iconTheme.color),
       title: Text('Notifications'),
       trailing: Switch(
         value: _notificationsOn,
-        onChanged:_toggleNotification,
+        onChanged: _toggleNotification,
       ),
     );
   }

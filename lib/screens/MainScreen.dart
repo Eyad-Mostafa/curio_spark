@@ -33,13 +33,14 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     final themeProvider = Provider.of<ThemeProvider>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
             onPressed: () => themeProvider.toggleTheme(),
-            icon: Icon(isDark ? Icons.wb_sunny : Icons.shield_moon, color: Theme.of(context).iconTheme.color),
+            icon: Icon(isDark ? Icons.wb_sunny : Icons.shield_moon,
+                color: Theme.of(context).iconTheme.color),
           )
         ],
       ),
@@ -48,7 +49,6 @@ class _MainScreenState extends State<MainScreen> {
         children: _screens,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
         selectedItemColor: tdBlue,
         unselectedItemColor: tdGrey,
         currentIndex: _selectedIndex,

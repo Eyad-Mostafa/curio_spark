@@ -125,7 +125,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: tdBGColor,
       elevation: 0,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 40,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset('assets/images/icon/icon.png'),
+              child: Image.asset('assets/images/icon/better.png'),
             ),
           ),
         ],
@@ -147,7 +146,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
@@ -167,7 +165,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: tdBGColor,
       appBar: _buildAppBar(),
       body: StreamBuilder<List<Curiosity>>(
         stream: CuriosityHiveService.curiositiesStream,
@@ -213,6 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   CuriosityCard(
                                     curiosity: curiosity,
                                     onCuriosityTapped: _handleFavoriteToggle,
+                                    onDismissed: (Curiosity) {},
                                   ),
                               ],
                             )
@@ -226,7 +224,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   bottom: 18,
                   right: 20,
                   child: FloatingActionButton(
-                    backgroundColor: tdBGColor,
                     onPressed: () => _showAddCuriosityDialog(context),
                     child: const Icon(Icons.add),
                   ),

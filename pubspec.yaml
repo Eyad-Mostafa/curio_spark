@@ -22,6 +22,8 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   path_provider: ^2.0.11
+  flutter_local_notifications: ^10.0.0
+  timezone: ^0.8.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -36,9 +38,11 @@ flutter:
 
   assets:
     - assets/images/icon/icon.png
+    - assets/images/icon/idea.png
+    - assets/images/icon/better.png
 
 flutter_launcher_icons:
-  image_path: "assets/images/icon/icon.png"
+  image_path: "assets/images/icon/better.png"
   android: true
   ios: true
   remove_alpha_ios: true
