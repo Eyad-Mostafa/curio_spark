@@ -36,20 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       borderRadius: BorderRadius.circular(100),
                       child: Image.asset(tProfileImage),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: editIcon,
-                      ),
-                      child: Icon(Icons.edit, color: Colors.black),
-                    ),
-                  )
+                  ),                
                 ],
               ),
               SizedBox(height: 10),

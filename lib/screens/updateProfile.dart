@@ -23,14 +23,9 @@ class UpdateProfileScreen extends StatelessWidget {
 
     return Scaffold(
             appBar: AppBar(
-          title: Text("Edit Profile"),
-        actions: [IconButton(
-          onPressed: () => themeProvider.toggleTheme(), 
-          icon: Icon(isDark?  Icons.wb_sunny : Icons.shield_moon),
-          )],
-        ),
+          title: Text("Edit Profile"),),
         body:Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -67,7 +62,6 @@ class UpdateProfileScreen extends StatelessWidget {
               ],
             ),
           ),              
-                  /////////////////userName//////////////
                   Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
                   TextFormField(
                     validator: (value) {
@@ -78,6 +72,7 @@ class UpdateProfileScreen extends StatelessWidget {
                     },
                     controller: usernameController,
                     obscureText: false,
+                    style: Theme.of(context).textTheme.bodyMedium,
                     decoration: InputDecoration(
                       labelText: "Username",
                       prefixIcon: Icon(color: iconColor, Icons.person),
@@ -85,17 +80,34 @@ class UpdateProfileScreen extends StatelessWidget {
                     keyboardType: TextInputType.text,
                   ),
                   Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
-                  
-                  DropdownBtn(),
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      } 
+                      else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                        return 'Enter a valid email';
+                      }
+                      return null;
+                    },
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      labelText: "Email",                    
+                      prefixIcon: Icon(color:iconColor, Icons.email),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
                   Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
                   SizedBox(
                     width: 200,
                     height: 40,
                     child: ElevatedButton(onPressed: (){
                       if (_formKey.currentState!.validate()){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsScreen(
+                        Navigator.pop(context);
+                      // Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsScreen(
                         // userName: usernameController.text,
-                      ))).then((value)=>usernameController.clear());
+                     // ))).then((value)=>usernameController.clear());
                     }
                     },
                     child: Text("Save",),
