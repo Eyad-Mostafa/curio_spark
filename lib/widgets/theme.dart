@@ -18,6 +18,7 @@ class ThemeProvider extends ChangeNotifier {
         scaffoldBackgroundColor: Color(0xFFEDE6F4),
         iconTheme: IconThemeData(color: Color(0xFF120239)),
         textTheme: TextTheme(
+          bodyMedium: TextStyle(color:   Color(0xFF120239)),
           headlineMedium: TextStyle(fontSize: 32, color: Color(0xFF120239)),
           bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF120239)),
           titleLarge: TextStyle(fontSize: 22, color: Color(0xFF120239)),
@@ -70,6 +71,7 @@ class ThemeProvider extends ChangeNotifier {
         scaffoldBackgroundColor: Color(0xFF080121),
         iconTheme: IconThemeData(color: Color(0xFFa580ca)),
         textTheme: TextTheme(
+          bodyMedium: TextStyle(color:  Color(0xFFEDE6F4)),
           headlineMedium: TextStyle(fontSize: 32, color: Color(0xFFEDE6F4)),
           bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF120239)),
           titleLarge: TextStyle(fontSize: 22, color: Color(0xFFEDE6F4)),
@@ -93,9 +95,9 @@ class ThemeProvider extends ChangeNotifier {
           borderSide: BorderSide(color: Color(0xFFEDE6F4)),
         ),
         labelStyle: TextStyle(
-          color: Color(0xFFa580ca),
+          color: Color(0xFFEDE6F4),
           ),
-        prefixIconColor: Color(0xFFa580ca),
+        prefixIconColor: Color(0xFFEDE6F4),
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
           textStyle: TextStyle(color: Color(0xFFa580ca)),
