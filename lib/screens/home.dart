@@ -210,7 +210,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   CuriosityCard(
                                     curiosity: curiosity,
                                     onCuriosityTapped: _handleFavoriteToggle,
-                                    onDismissed: (Curiosity) {},
+                                    onDismissed: (Curiosity) {
+                                      CuriosityHiveService.deleteCuiosity(curiosity.id);
+                                    },
                                   ),
                               ],
                             )

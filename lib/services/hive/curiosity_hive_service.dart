@@ -28,6 +28,13 @@ class CuriosityHiveService {
     await box.put(curiosity.id, curiosity);
   }
 
+  static Future<void> deleteCuiosity(String? id) async {
+    if (id == null) return;
+    
+    await box.delete(id);
+    _updateStream();
+  }
+
   static Future<void> clear() async {
     await box.clear();
     _updateStream();
