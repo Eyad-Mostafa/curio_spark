@@ -22,6 +22,7 @@ void main() async {
 
   CuriosityHiveService.init();
 
+  await Hive.openBox('profileBox');
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
