@@ -16,7 +16,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  share: ^2.0.4
   cupertino_icons: ^1.0.5
   device_preview: ^1.1.0
   shared_preferences: ^2.2.0
@@ -26,6 +25,7 @@ dependencies:
   path_provider: ^2.0.11
   flutter_local_notifications: ^19.1.0
   timezone: ^0.10.0
+  share_plus: ^11.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
