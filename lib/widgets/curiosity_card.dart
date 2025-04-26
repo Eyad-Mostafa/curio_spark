@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import '../model/curiosity.dart';
 import '../constants/colors.dart';
 
@@ -69,7 +70,7 @@ class CuriosityCard extends StatelessWidget {
                   iconSize: 16,
                   icon: const Icon(Icons.share, color: Colors.white),
                   onPressed: () {
-                    // Share.share(curiosity.content ?? '');
+                     Share.share(curiosity.content ?? '');
                   },
                 ),
               ),
