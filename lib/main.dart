@@ -1,5 +1,4 @@
 import 'package:curio_spark/model/profile.dart';
-import 'package:curio_spark/screens/MainScreen.dart';
 import 'package:curio_spark/screens/splashscreen.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/foundation.dart';
@@ -20,8 +19,8 @@ void main() async {
 
   await Hive.openBox<Profile>('profiles');
   await Hive.openBox<Curiosity>('curiosities');
-  CuriosityHiveService.init();
 
+  CuriosityHiveService.init();
 
   runApp(
     DevicePreview(
@@ -42,14 +41,15 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+    );
+
     return MaterialApp(
       builder: DevicePreview.appBuilder,
       useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
       title: 'CurioSpark',
       home: SplashScreen(),
-
       theme: themeProvider.lightTheme,
       darkTheme: themeProvider.darkTheme,
       themeMode: themeProvider.themeMode,

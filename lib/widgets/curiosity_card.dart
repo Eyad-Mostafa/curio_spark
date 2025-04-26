@@ -7,14 +7,12 @@ class CuriosityCard extends StatelessWidget {
   final Curiosity curiosity;
   final Function(Curiosity) onCuriosityTapped;
   final Function(Curiosity) onDismissed;
-  // final Function(String) onDeleteCuriosity;
 
   const CuriosityCard({
     Key? key,
     required this.curiosity,
     required this.onCuriosityTapped,
     required this.onDismissed,
-    //requierd this.onDeleteCuriosity,
   }) : super(key: key);
 
   @override
