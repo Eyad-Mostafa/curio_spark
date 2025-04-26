@@ -3,21 +3,41 @@ import 'package:curio_spark/constants/colors.dart';
 import 'package:curio_spark/screens/settings.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
-const List<String> list = ["Male", "Female"];
+class UpdateProfileScreen extends StatefulWidget {
+  const UpdateProfileScreen({super.key});
 
-class UpdateProfileScreen extends StatelessWidget {
-  UpdateProfileScreen({super.key});
-  
-  TextEditingController usernameController = TextEditingController();
+  @override
+  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
+}
+
+class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+  late TextEditingController usernameController;
+  late TextEditingController emailController;
   final _formKey = GlobalKey<FormState>();
+  
+  @override
+  void initState() {
+    super.initState();
+    var box = Hive.box('profileBox');
+    String oldImagePath = box.get('profileImage', defaultValue: '');
+    usernameController = TextEditingController(text: box.get('name', defaultValue: ''));
+    emailController = TextEditingController(text: box.get('email', defaultValue: ''));
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
 
 
   @override
   Widget build(BuildContext context) {
-    
-    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    var box = Hive.box('profileBox');
     final themeProvider = Provider.of<ThemeProvider>(context);
     var iconColor = Theme.of(context).iconTheme.color;
 
@@ -91,6 +111,7 @@ class UpdateProfileScreen extends StatelessWidget {
                       return null;
                     },
                     style: Theme.of(context).textTheme.bodyMedium,
+                    controller: emailController,
                     obscureText: false,
                     decoration: InputDecoration(
                       labelText: "Email",                    
@@ -104,10 +125,9 @@ class UpdateProfileScreen extends StatelessWidget {
                     height: 40,
                     child: ElevatedButton(onPressed: (){
                       if (_formKey.currentState!.validate()){
+                        box.put('name', usernameController.text);
+                        box.put('email', emailController.text);
                         Navigator.pop(context);
-                      // Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsScreen(
-                        // userName: usernameController.text,
-                     // ))).then((value)=>usernameController.clear());
                     }
                     },
                     child: Text("Save",),
@@ -121,41 +141,3 @@ class UpdateProfileScreen extends StatelessWidget {
         );
   }
 }
-
-class DropdownBtn extends StatefulWidget {
-  const DropdownBtn({super.key});
-
-  @override
-  State<DropdownBtn> createState() => _DropdownBtnState();
-}
-
-class _DropdownBtnState extends State<DropdownBtn> {
-  String dropdownValue = list.first;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-  decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(10),
-  ),
-    child:  DropdownButton<String>(
-      value: dropdownValue,
-      icon: Icon(Icons.arrow_downward),
-      elevation: 16,
-      style: Theme.of(context).textTheme.bodyLarge, 
-      underline: Container(height: 2,),
-      onChanged: (String? value) {
-        setState(() {
-          dropdownValue = value!;
-        });
-      },
-      items:
-          list.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(value: value, child: Text(value));
-          }).toList(),
-      )
-    );
-  }
-}
-
-

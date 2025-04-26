@@ -58,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             TextField(
               controller: contentController,
+              style: Theme.of(context).textTheme.bodyMedium,
               decoration:
                   const InputDecoration(hintText: "Enter your curiosity"),
               autofocus: true,
@@ -150,13 +151,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: TextField(
         controller: _searchController,
-        decoration: const InputDecoration(
+        style: Theme.of(context).textTheme.bodyMedium,
+        decoration: InputDecoration(
           contentPadding: EdgeInsets.all(0),
-          prefixIcon: Icon(Icons.search, color: tdBlack, size: 20),
+          prefixIcon: Icon(Icons.search, color: Theme.of(context).iconTheme.color, size: 20),
           prefixIconConstraints: BoxConstraints(maxHeight: 20, minWidth: 25),
           border: InputBorder.none,
           hintText: 'Search',
-          hintStyle: TextStyle(color: tdGrey),
+          hintStyle: Theme.of(context).textTheme.bodyMedium,
         ),
       ),
     );
