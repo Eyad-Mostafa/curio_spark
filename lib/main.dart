@@ -9,20 +9,25 @@ import 'package:device_preview/device_preview.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:curio_spark/model/curiosity.dart';
 import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize Hive and open boxes
   await Hive.initFlutter();
   Hive.registerAdapter(CuriosityAdapter());
   Hive.registerAdapter(ProfileAdapter());
 
   await Hive.openBox<Profile>('profiles');
   await Hive.openBox<Curiosity>('curiosities');
-
   CuriosityHiveService.init();
-
   await Hive.openBox('profileBox');
+
+  // Initialize Android Alarm Manager
+  await AndroidAlarmManager.initialize();
+
+  // Run the app
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,

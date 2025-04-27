@@ -6,14 +6,22 @@ import 'package:curio_spark/services/gemini_service.dart';
 import 'package:curio_spark/screens/MainScreen.dart';
 import 'package:curio_spark/constants/colors.dart';
 
+// Hive imports for background isolate
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:curio_spark/model/curiosity.dart';
+import 'package:curio_spark/model/profile.dart';
+
+// Define the alarm interval as a constant for easy changes
+const Duration alarmInterval = Duration(seconds: 30); // Adjust as needed
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _animation;
 
@@ -56,16 +64,18 @@ class _SplashScreenState extends State<SplashScreen>
     // Cancel any existing alarm with ID 0
     AndroidAlarmManager.cancel(0).then((_) {
       debugPrint("🗑️ Existing alarm cancelled");
-      // Schedule a repeating task every 30 seconds (test interval)
+
+      // Schedule a repeating task every `alarmInterval`
       AndroidAlarmManager.periodic(
-        const Duration(seconds: 30),
+        alarmInterval,
         0, // unique alarm ID
         _backgroundFetchTask,
         exact: true,
         wakeup: true,
         rescheduleOnReboot: true,
       );
-      debugPrint("⏰ AlarmManager task scheduled every 5 minutes");
+
+      debugPrint("⏰ AlarmManager task scheduled every ${alarmInterval.inSeconds} seconds");
     });
   }
 
@@ -90,9 +100,25 @@ class _SplashScreenState extends State<SplashScreen>
       );
 }
 
-/// This runs in its own background isolate every 5 minutes
+/// Runs in its own background isolate every [alarmInterval]
 @pragma('vm:entry-point')
 Future<void> _backgroundFetchTask() async {
   debugPrint("🔔 AlarmManager triggered curiosity generation");
-  await CuriosityGeneratorService.generateAndSaveUniqueCuriosity();
+
+  // Initialize Hive in this isolate
+  await Hive.initFlutter();
+
+  // Register adapters only once
+  if (!Hive.isAdapterRegistered(0)) {
+    Hive.registerAdapter(CuriosityAdapter());
+  }
+  if (!Hive.isAdapterRegistered(1)) {
+    Hive.registerAdapter(ProfileAdapter());
+  }
+
+  // Open the necessary box
+  final curiosityBox = await Hive.openBox<Curiosity>('curiosities');
+
+  // Call your generator (passing the box)
+  await CuriosityGeneratorService.generateAndSaveUniqueCuriosity(curiosityBox);
 }

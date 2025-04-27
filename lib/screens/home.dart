@@ -5,6 +5,7 @@ import 'package:curio_spark/widgets/curiosity_card.dart';
 import 'package:flutter/material.dart';
 import 'package:curio_spark/services/gemini_service.dart';
 import 'package:curio_spark/widgets/speech_input.dart';
+import 'package:hive_flutter/hive_flutter.dart'; // for Hive.box()
 
 final speechInputKey = GlobalKey<SpeechInputState>();
 
@@ -22,6 +23,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    // 1) Initialize the Hive service so the stream emits its first value
+    CuriosityHiveService.init();
+    // 2) Seed the filtered list with whatever is already in the box
+    filteredCuriosities = CuriosityHiveService.getAll();
+    // 3) Listen to search field changes
     _searchController.addListener(_runFilter);
   }
 
@@ -34,11 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void _runFilter() {
     final query = _searchController.text.toLowerCase();
     setState(() {
+      final all = CuriosityHiveService.getAll();
       filteredCuriosities = query.isEmpty
-          ? CuriosityHiveService.getAll()
-          : CuriosityHiveService.getAll()
-              .where((item) => item.content!.toLowerCase().contains(query))
-              .toList();
+          ? all
+          : all.where((c) => c.content!.toLowerCase().contains(query)).toList();
     });
   }
 
@@ -48,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _showAddCuriosityDialog(BuildContext context) {
     final contentController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -59,12 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
             TextField(
               controller: contentController,
               style: Theme.of(context).textTheme.bodyMedium,
-              decoration:
-                  const InputDecoration(hintText: "Enter your curiosity"),
+              decoration: const InputDecoration(hintText: "Enter your curiosity"),
               autofocus: true,
             ),
             const SizedBox(height: 16),
-            // 🔊 Add SpeechInput widget here
             SpeechInput(
               key: speechInputKey,
               onResult: (text) {
@@ -95,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 CuriosityHiveService.addCuriosity(newCuriosity);
                 speechInputKey.currentState?.stopListening();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("✅ Curiosity added!")),
+                  const SnackBar(content: Text("✅ Curiosity added!")),
                 );
                 Navigator.pop(context);
               }
@@ -104,18 +106,19 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           ElevatedButton(
             onPressed: () async {
+              // Fetch the box and pass it to your generator
+              final box = Hive.box<Curiosity>('curiosities');
               final success = await CuriosityGeneratorService
-                  .generateAndSaveUniqueCuriosity();
-              if (success) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("✅ New curiosity added!")),
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text("⚠️ Could not fetch a new curiosity.")),
-                );
-              }
+                  .generateAndSaveUniqueCuriosity(box);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    success
+                        ? "✅ New curiosity added!"
+                        : "⚠️ Could not fetch a new curiosity.",
+                  ),
+                ),
+              );
             },
             child: const Text("Get AI Curiosity"),
           ),
@@ -130,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
+          SizedBox(
             height: 40,
             width: 40,
             child: ClipRRect(
@@ -153,9 +156,11 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: _searchController,
         style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(0),
-          prefixIcon: Icon(Icons.search, color: Theme.of(context).iconTheme.color, size: 20),
-          prefixIconConstraints: BoxConstraints(maxHeight: 20, minWidth: 25),
+          contentPadding: EdgeInsets.zero,
+          prefixIcon: Icon(Icons.search,
+              color: Theme.of(context).iconTheme.color, size: 20),
+          prefixIconConstraints:
+              const BoxConstraints(maxHeight: 20, minWidth: 25),
           border: InputBorder.none,
           hintText: 'Search',
           hintStyle: Theme.of(context).textTheme.bodyMedium,
@@ -173,51 +178,37 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final curiosities = snapshot.data!;
-            if (_searchController.text.isNotEmpty) {
-              filteredCuriosities = curiosities
-                  .where((item) => item.content!
-                      .toLowerCase()
-                      .contains(_searchController.text.toLowerCase()))
-                  .toList();
-            } else {
-              filteredCuriosities = curiosities;
+            // Always update filteredCuriosities if search is empty
+            if (_searchController.text.isEmpty) {
+              filteredCuriosities = curiosities.toList();
             }
-
             return Stack(
               children: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 15),
                   child: Column(
                     children: [
                       searchBox(),
                       Expanded(
                         child: ListView(
                           children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(top: 50, bottom: 20),
-                              child: const Text(
-                                'Your Curiosities',
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                            const SizedBox(height: 50),
+                            const Text(
+                              'Your Curiosities',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                            Column(
-                              children: [
-                                for (Curiosity curiosity
-                                    in filteredCuriosities.reversed)
-                                  CuriosityCard(
-                                    curiosity: curiosity,
-                                    onCuriosityTapped: _handleFavoriteToggle,
-                                    onDismissed: (Curiosity) {
-                                      CuriosityHiveService.deleteCuiosity(curiosity.id);
-                                    },
-                                  ),
-                              ],
-                            )
+                            const SizedBox(height: 20),
+                            for (var c in filteredCuriosities.reversed)
+                              CuriosityCard(
+                                curiosity: c,
+                                onCuriosityTapped: _handleFavoriteToggle,
+                                onDismissed: (_) =>
+                                    CuriosityHiveService.deleteCuriosity(c.id),
+                              ),
                           ],
                         ),
                       ),

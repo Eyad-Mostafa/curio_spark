@@ -25,12 +25,16 @@ class CuriosityHiveService {
   }
 
   static Future<void> addCuriosity(Curiosity curiosity) async {
-    await box.put(curiosity.id, curiosity);
+    // Ensure curiosity is not null before adding
+    if (curiosity != null) {
+      await box.put(curiosity.id, curiosity);
+      _updateStream();
+    }
   }
 
-  static Future<void> deleteCuiosity(String? id) async {
+  static Future<void> deleteCuriosity(String? id) async {
     if (id == null) return;
-    
+
     await box.delete(id);
     _updateStream();
   }
@@ -46,7 +50,7 @@ class CuriosityHiveService {
     final curiosity = box.get(id);
     if (curiosity != null) {
       curiosity.isFavorite = !curiosity.isFavorite;
-      await curiosity.save();
+      await box.put(id, curiosity); // directly save the curiosity
       _updateStream();
     }
   }

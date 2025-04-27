@@ -110,9 +110,8 @@ class CuriosityGeneratorService {
     }
   }
 
-  static Future<bool> generateAndSaveUniqueCuriosity() async {
-    final box = Hive.box<Curiosity>('curiosities');
-
+  static Future<bool> generateAndSaveUniqueCuriosity(
+      Box<Curiosity> curiosityBox) async {
     while (true) {
       final prompt = _getRandomPrompt();
       final result = await _fetchFromGemini(prompt);
@@ -122,7 +121,7 @@ class CuriosityGeneratorService {
       final normalizedNew = _normalize(trimmed);
 
       const double simThreshold = 0.75;
-      final isTooSimilar = box.values.any((c) {
+      final isTooSimilar = curiosityBox.values.any((c) {
         final oldNorm = _normalize(c.content ?? '');
         final similarity =
             StringSimilarity.compareTwoStrings(normalizedNew, oldNorm);
@@ -142,8 +141,9 @@ class CuriosityGeneratorService {
         isFavorite: false,
       );
 
-      await box.put(id, curiosity);
+      await curiosityBox.put(id, curiosity);
       print("✅ New curiosity saved: ${curiosity.content}");
+
       return true;
     }
   }
