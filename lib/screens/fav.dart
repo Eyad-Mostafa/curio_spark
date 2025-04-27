@@ -41,7 +41,7 @@ class _FavScreenState extends State<FavScreen> {
             width: 40,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset('assets/images/icon/icon.png'),
+              child: Image.asset('assets/images/icon/better.png'),
             ),
           ),
         ],
