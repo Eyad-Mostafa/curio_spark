@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 import 'package:string_similarity/string_similarity.dart';
-import 'package:curio_spark/services/notificationservuce.dart';
+import 'package:curio_spark/services/notification_service.dart';
 
 import '../model/curiosity.dart';
 

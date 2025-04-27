@@ -1,6 +1,7 @@
 import 'package:curio_spark/constants/colors.dart';
 import 'package:curio_spark/model/curiosity.dart';
 import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
+import 'package:curio_spark/services/notification_service.dart';
 import 'package:curio_spark/widgets/curiosity_card.dart';
 import 'package:flutter/material.dart';
 import 'package:curio_spark/services/gemini_service.dart';
@@ -87,7 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
             child: const Text("Cancel"),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
+              await NotificationService.notifyNewCuriosity();
+
               if (contentController.text.isNotEmpty) {
                 final newCuriosity = Curiosity(
                   id: DateTime.now().millisecondsSinceEpoch.toString(),

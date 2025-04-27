@@ -1,4 +1,5 @@
 import 'package:curio_spark/screens/home.dart';
+import 'package:curio_spark/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -197,18 +198,8 @@ class SettingsMenu extends StatelessWidget {
   }
 }
 
-Future<void> _requestNotificationPermission() async {
-  PermissionStatus status = await Permission.notification.request();
-  if (status.isGranted) {
-    // Permission granted, proceed to show notifications
-  } else {
-    // Handle permission denial
-  }
-}
-
 /// NOTIFICATIONS
 class NotificationSettings extends StatefulWidget {
-  const NotificationSettings({super.key});
 
   @override
   State<NotificationSettings> createState() => _NotificationSettingsState();
@@ -227,13 +218,11 @@ class _NotificationSettingsState extends State<NotificationSettings> {
   }
 
   Future<void> _initializeNotificationPlugin() async {
+    // Use your default launcher icon so the resource is always found
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings(
-            'better'); // Ensure app_icon exists in your resources
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     final InitializationSettings initializationSettings =
-        InitializationSettings(
-      android: initializationSettingsAndroid,
-    );
+        InitializationSettings(android: initializationSettingsAndroid);
 
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
@@ -262,6 +251,8 @@ class _NotificationSettingsState extends State<NotificationSettings> {
 
     if (value) {
       _showNotification();
+    } else {
+      await _flutterLocalNotificationsPlugin.cancelAll();
     }
   }
 
@@ -273,6 +264,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
       channelDescription: 'Channel for notification settings',
       importance: Importance.high,
       priority: Priority.high,
+      icon: '@mipmap/ic_launcher',  // explicitly set a valid icon
     );
 
     const NotificationDetails platformDetails =
@@ -299,6 +291,8 @@ class _NotificationSettingsState extends State<NotificationSettings> {
     );
   }
 }
+
+
 
 /// DARK MODE
 class DarkModeSettings extends StatelessWidget {
