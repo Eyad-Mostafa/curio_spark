@@ -104,24 +104,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Text("Add"),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              // Fetch the box and pass it to your generator
-              final box = Hive.box<Curiosity>('curiosities');
-              final success = await CuriosityGeneratorService
-                  .generateAndSaveUniqueCuriosity(box);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    success
-                        ? "✅ New curiosity added!"
-                        : "⚠️ Could not fetch a new curiosity.",
-                  ),
-                ),
-              );
-            },
-            child: const Text("Get AI Curiosity"),
-          ),
         ],
       ),
     );
