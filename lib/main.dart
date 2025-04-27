@@ -5,17 +5,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:curio_spark/model/curiosity.dart';
 import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:device_preview/device_preview.dart'; // <--- Added back
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive and open boxes
-  await Hive.initFlutter();
+  // Initialize Hive
+  if (kIsWeb) {
+    await Hive.initFlutter(''); // Web uses IndexedDB, no path needed
+  } else {
+    await Hive.initFlutter();
+  }
   Hive.registerAdapter(CuriosityAdapter());
   Hive.registerAdapter(ProfileAdapter());
 
@@ -24,15 +28,17 @@ void main() async {
   CuriosityHiveService.init();
   await Hive.openBox('profileBox');
 
-  // Initialize Android Alarm Manager
-  await AndroidAlarmManager.initialize();
+  // Initialize Android Alarm Manager (non-web only)
+  if (!kIsWeb) {
+    await AndroidAlarmManager.initialize();
+  }
 
   // Run the app
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
+      enabled: !kReleaseMode, // Only enable in debug or profile mode
       builder: (context) => ChangeNotifierProvider(
-        create: (_) => ThemeProvider()..init(), // Initialize ThemeProvider
+        create: (_) => ThemeProvider()..init(),
         child: const MyApp(),
       ),
     ),
@@ -51,7 +57,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      builder: DevicePreview.appBuilder,
+      builder: DevicePreview.appBuilder, // <--- Added back
       useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
       title: 'CurioSpark',
