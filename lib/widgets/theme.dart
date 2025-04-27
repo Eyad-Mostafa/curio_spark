@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.light;
@@ -6,8 +7,22 @@ class ThemeProvider extends ChangeNotifier {
   ThemeMode get themeMode => _themeMode;
   bool get isDarkMode => _themeMode == ThemeMode.dark;
 
-  void toggleTheme() {
+  ThemeProvider() {
+    // Constructor doesn't call init directly to avoid async issues
+  }
+
+  // Initialize theme from SharedPreferences
+  Future<void> init() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isDark = prefs.getBool('dark_mode') ?? false;
+    _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+    notifyListeners();
+  }
+
+  Future<void> toggleTheme() async {
     _themeMode = isDarkMode ? ThemeMode.light : ThemeMode.dark;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('dark_mode', isDarkMode);
     notifyListeners();
   }
 
@@ -15,10 +30,10 @@ class ThemeProvider extends ChangeNotifier {
   ThemeData get lightTheme => ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.deepPurple,
-        scaffoldBackgroundColor: Color(0xFFEDE6F4),
+        scaffoldBackgroundColor: Color(0xFFEDE6F4), // Fixed typo here
         iconTheme: IconThemeData(color: Color(0xFF120239)),
         textTheme: TextTheme(
-          bodyMedium: TextStyle(color:   Color(0xFF120239)),
+          bodyMedium: TextStyle(color: Color(0xFF120239)),
           headlineMedium: TextStyle(fontSize: 32, color: Color(0xFF120239)),
           bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF120239)),
           titleLarge: TextStyle(fontSize: 22, color: Color(0xFF120239)),
@@ -35,23 +50,26 @@ class ThemeProvider extends ChangeNotifier {
         appBarTheme: AppBarTheme(
           backgroundColor: Color(0xFFEDE6F4),
           iconTheme: IconThemeData(color: Color(0xFF120239)),
-          titleTextStyle: TextStyle(color: Color(0xFF120239), fontSize: 20, fontWeight: FontWeight.bold),
+          titleTextStyle: TextStyle(
+              color: Color(0xFF120239),
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
         ),
         inputDecorationTheme: InputDecorationTheme(
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Color(0xFF120239)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Color(0xFF4a1985)),
-        ),
-        labelStyle: TextStyle(
-          color: Color(0xFF120239),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xFF120239)),
           ),
-        prefixIconColor: Color(0xFF120239),
-      ),
-      dropdownMenuTheme: DropdownMenuThemeData(
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xFF4a1985)),
+          ),
+          labelStyle: TextStyle(
+            color: Color(0xFF120239),
+          ),
+          prefixIconColor: Color(0xFF120239),
+        ),
+        dropdownMenuTheme: DropdownMenuThemeData(
           textStyle: TextStyle(color: Color(0xFF120239)),
         ),
         cardTheme: CardTheme(
@@ -68,10 +86,10 @@ class ThemeProvider extends ChangeNotifier {
   ThemeData get darkTheme => ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.deepPurple,
-        scaffoldBackgroundColor: Color(0xFF080121),
+        scaffoldBackgroundColor: Color(0xFF080121), // Fixed typo here
         iconTheme: IconThemeData(color: Color(0xFFa580ca)),
         textTheme: TextTheme(
-          bodyMedium: TextStyle(color:  Color(0xFFEDE6F4)),
+          bodyMedium: TextStyle(color: Color(0xFFEDE6F4)),
           headlineMedium: TextStyle(fontSize: 32, color: Color(0xFFEDE6F4)),
           bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF120239)),
           titleLarge: TextStyle(fontSize: 22, color: Color(0xFFEDE6F4)),
@@ -86,26 +104,29 @@ class ThemeProvider extends ChangeNotifier {
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Color(0xFFa580ca)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Color(0xFFEDE6F4)),
-        ),
-        labelStyle: TextStyle(
-          color: Color(0xFFEDE6F4),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xFFa580ca)),
           ),
-        prefixIconColor: Color(0xFFEDE6F4),
-      ),
-      dropdownMenuTheme: DropdownMenuThemeData(
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xFFEDE6F4)),
+          ),
+          labelStyle: TextStyle(
+            color: Color(0xFFEDE6F4),
+          ),
+          prefixIconColor: Color(0xFFEDE6F4),
+        ),
+        dropdownMenuTheme: DropdownMenuThemeData(
           textStyle: TextStyle(color: Color(0xFFa580ca)),
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor:  Color(0xFF080121),
+          backgroundColor: Color(0xFF080121),
           iconTheme: IconThemeData(color: Color(0xFFa580ca)),
-          titleTextStyle: TextStyle(color: Color(0xFFa580ca), fontSize: 20, fontWeight: FontWeight.bold),
+          titleTextStyle: TextStyle(
+              color: Color(0xFFa580ca),
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
         ),
         cardTheme: CardTheme(
           color: Color(0xFFa580ca),

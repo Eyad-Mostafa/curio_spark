@@ -32,7 +32,7 @@ void main() async {
     DevicePreview(
       enabled: !kReleaseMode,
       builder: (context) => ChangeNotifierProvider(
-        create: (_) => ThemeProvider(),
+        create: (_) => ThemeProvider()..init(), // Initialize ThemeProvider
         child: const MyApp(),
       ),
     ),
