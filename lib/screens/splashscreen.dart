@@ -21,7 +21,8 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _animation;
 
@@ -75,7 +76,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         rescheduleOnReboot: true,
       );
 
-      debugPrint("⏰ AlarmManager task scheduled every ${alarmInterval.inSeconds} seconds");
+      debugPrint(
+          "⏰ AlarmManager task scheduled every ${alarmInterval.inSeconds} seconds");
     });
   }
 
