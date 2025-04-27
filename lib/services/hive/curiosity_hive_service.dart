@@ -1,5 +1,4 @@
 import 'package:curio_spark/model/curiosity.dart';
-import 'package:curio_spark/services/notificationservuce.dart';
 import 'package:hive/hive.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -29,9 +28,6 @@ class CuriosityHiveService {
   if (curiosity != null) {
     await box.put(curiosity.id, curiosity);
     _updateStream();
-
-    // Show notification for new curiosity
-    await NotificationService.notifyNewCuriosity();
   }
 }
 

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 import 'package:string_similarity/string_similarity.dart';
+import 'package:curio_spark/services/notificationservuce.dart';
 
 import '../model/curiosity.dart';
 
@@ -144,6 +145,8 @@ class CuriosityGeneratorService {
       await curiosityBox.put(id, curiosity);
       print("✅ New curiosity saved: ${curiosity.content}");
 
+      // Show notification for new curiosity
+      await NotificationService.notifyNewCuriosity();
       return true;
     }
   }
