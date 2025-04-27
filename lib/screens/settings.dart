@@ -37,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       borderRadius: BorderRadius.circular(100),
                       child: Image.asset(tProfileImage),
                     ),
-                  ),                
+                  ),
                 ],
               ),
               SizedBox(height: 10),
@@ -135,8 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => HomeScreen()),
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
                     );
                   },
                   child: Text("Restart Progress"),
@@ -302,38 +301,12 @@ class _NotificationSettingsState extends State<NotificationSettings> {
 }
 
 /// DARK MODE
-class DarkModeSettings extends StatefulWidget {
+class DarkModeSettings extends StatelessWidget {
   const DarkModeSettings({super.key});
 
-  @override
-  State<DarkModeSettings> createState() => _DarkModeSettingsState();
-}
-
-class _DarkModeSettingsState extends State<DarkModeSettings> {
-  bool _darkMode = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadDarkModePreference();
-  }
-
-  Future<void> _loadDarkModePreference() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _darkMode = prefs.getBool('dark_mode') ?? false;
-    });
-  }
-
-  Future<void> _toggleDarkMode(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _darkMode = value;
-    });
-    await prefs.setBool('dark_mode', value);
-
-    // Actually change theme
-    Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+  Future<void> _toggleDarkMode(BuildContext context, bool value) async {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    await themeProvider.toggleTheme();
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -345,13 +318,16 @@ class _DarkModeSettingsState extends State<DarkModeSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return ListTile(
-      leading: Icon(_darkMode ? Icons.shield_moon : Icons.wb_sunny,
-          color: Theme.of(context).iconTheme.color),
+      leading: Icon(
+        themeProvider.isDarkMode ? Icons.shield_moon : Icons.wb_sunny,
+        color: Theme.of(context).iconTheme.color,
+      ),
       title: Text('Dark Mode'),
       trailing: Switch(
-        value: _darkMode,
-        onChanged: _toggleDarkMode,
+        value: themeProvider.isDarkMode,
+        onChanged: (value) => _toggleDarkMode(context, value),
       ),
     );
   }
