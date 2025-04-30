@@ -80,6 +80,7 @@ class ThemeProvider extends ChangeNotifier {
             borderRadius: BorderRadius.circular(16),
           ),
         ),
+        
       );
 
   // Dark theme definition
@@ -91,7 +92,7 @@ class ThemeProvider extends ChangeNotifier {
         textTheme: TextTheme(
           bodyMedium: TextStyle(color: Color(0xFFEDE6F4)),
           headlineMedium: TextStyle(fontSize: 32, color: Color(0xFFEDE6F4)),
-          bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF120239)),
+          bodyLarge: TextStyle(fontSize: 16, color: Color.fromARGB(255, 250, 250, 252)),
           titleLarge: TextStyle(fontSize: 22, color: Color(0xFFEDE6F4)),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(

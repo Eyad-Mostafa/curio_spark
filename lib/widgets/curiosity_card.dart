@@ -23,7 +23,7 @@ class CuriosityCard extends StatelessWidget {
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
-        color: const Color.fromARGB(255, 121, 79, 76),
+        color: const Color.fromARGB(255, 238, 54, 41),
         child: const Icon(Icons.delete, color: Colors.white),
       ),
       onDismissed: (direction) {
@@ -42,11 +42,10 @@ class CuriosityCard extends StatelessWidget {
           title: Text(
             curiosity.content ?? '',
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 13,
               color: tdBlack,
             ),
           ),
-          // نقل الأزرار إلى الأسفل على الجهة اليسرى باستخدام subtitle
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Row(
