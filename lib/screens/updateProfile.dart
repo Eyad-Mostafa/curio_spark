@@ -25,7 +25,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   File? _newImage;
   String? _currentImagePath;
 
-  @override
+  final profile = ProfileHiveService.getProfile();
+
+
   @override
 void initState() {
   super.initState();
