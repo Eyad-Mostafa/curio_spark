@@ -5,12 +5,15 @@ part 'profile.g.dart';
 @HiveType(typeId: 1)
 class Profile extends HiveObject {
   @HiveField(0)
-  String name;
+  String? id;
 
   @HiveField(1)
-  String email;
+  String name;
 
   @HiveField(2)
+  String email;
+
+  @HiveField(3)
   String? image;
 
   Profile({
