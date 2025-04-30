@@ -23,12 +23,19 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  TextEditingController? usernameController;
   String? _currentImagePath;
+
+  @override
+  void initState() {
+    super.initState();
+    // Load saved profile data (image and name) from Hive
+    final profile = ProfileHiveService.getProfile();
+    _currentImagePath = profile?.image;
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    // var box = Hive.box("profiles");
     final profile = ProfileHiveService.getProfile();
     final name = profile?.name ?? '';
 
@@ -38,7 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: EdgeInsets.all(20),
           child: Column(
             children: [
-              Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
+              const SizedBox(height: 10),
               Stack(
                 children: [
                   SizedBox(
@@ -48,22 +55,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       borderRadius: BorderRadius.circular(100),
                       child: _currentImagePath != null &&
                               File(_currentImagePath!).existsSync()
-                          ? Image.file(File(_currentImagePath!),
-                              fit: BoxFit.cover)
-                          : Image.asset('assets/images/icon/default.png',
-                              fit: BoxFit.cover),
+                          ? Image.file(
+                              File(_currentImagePath!),
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'assets/images/icon/default.png',
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                 ],
               ),
 
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
-                "Welcome ${name}",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                "Welcome $name",
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               SizedBox(
                 width: 200,
                 height: 40,
@@ -72,19 +86,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => UpdateProfileScreen()),
+                        builder: (context) => const UpdateProfileScreen(),
+                      ),
                     );
                   },
-                  child: Text("Edit Profile"),
+                  child: const Text("Edit Profile"),
                 ),
               ),
-              SizedBox(width: 30),
-              Divider(),
-              SizedBox(width: 10),
+              const SizedBox(height: 30),
+              const Divider(),
+              const SizedBox(height: 10),
 
-              /// Notifications and Dark Mode
-              NotificationSettings(),
-              DarkModeSettings(),
+              // Notifications and Dark Mode settings
+              const NotificationSettings(),
+              const DarkModeSettings(),
 
               SettingsMenu(
                 title: "Help",
@@ -93,31 +108,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text('Help'),
+                      title: const Text('Help'),
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('🔍 What is CurioSpark?',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        children: const [
+                          Text('🔍 What is CurioSpark?', style: TextStyle(fontWeight: FontWeight.bold)),
                           SizedBox(height: 4),
-                          Text(
-                              'CurioSpark is an app that delivers fascinating daily curiosities and facts.'),
+                          Text('CurioSpark is an app that delivers fascinating daily curiosities and facts.'),
                           SizedBox(height: 12),
-                          Text('📅 Notifications',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('📅 Notifications', style: TextStyle(fontWeight: FontWeight.bold)),
                           SizedBox(height: 4),
-                          Text(
-                              'You can enable or disable notifications to get your daily curiosity delivered.'),
+                          Text('You can enable or disable notifications to get your daily curiosity delivered.'),
                           SizedBox(height: 12),
-                          Text('🌗 Dark Mode',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('🌗 Dark Mode', style: TextStyle(fontWeight: FontWeight.bold)),
                           SizedBox(height: 4),
-                          Text(
-                              'You can switch between light and dark themes from the Settings screen.'),
+                          Text('You can switch between light and dark themes from the Settings screen.'),
                           SizedBox(height: 12),
-                          Text('🛠 Need Help?',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('🛠 Need Help?', style: TextStyle(fontWeight: FontWeight.bold)),
                           SizedBox(height: 4),
                           Text('Contact us at: support@curiospark.app'),
                         ],
@@ -125,7 +133,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(context),
-                          child: Text('Close'),
+                          child: const Text('Close'),
                         ),
                       ],
                     ),
@@ -133,19 +141,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
 
-              /// About
               SettingsMenu(
                 title: "About",
                 icon: Icons.info_outline,
                 onPress: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AboutScreen()),
+                    MaterialPageRoute(builder: (context) => const AboutScreen()),
                   );
                 },
               ),
-              Divider(),
-              SizedBox(height: 10),
+
+              const Divider(),
+              const SizedBox(height: 10),
               SizedBox(
                 width: 200,
                 height: 40,
@@ -154,10 +162,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ProfileHiveService.deleteProfile();
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => SplashScreen()),
+                      MaterialPageRoute(builder: (context) => const SplashScreen()),
                     );
                   },
-                  child: Text("Restart Progress"),
+                  child: const Text("Restart Progress"),
                 ),
               ),
             ],
@@ -213,11 +221,12 @@ class SettingsMenu extends StatelessWidget {
             )
           : null,
     );
-  }
 }
-
+}
 /// NOTIFICATIONS
 class NotificationSettings extends StatefulWidget {
+  const NotificationSettings({Key? key}) : super(key: key);
+
   @override
   State<NotificationSettings> createState() => _NotificationSettingsState();
 }
@@ -227,19 +236,18 @@ class _NotificationSettingsState extends State<NotificationSettings> {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  TextEditingController? usernameController;
-  String? _currentImagePath;
-
   @override
   void initState() {
     super.initState();
+    // Load profile image if needed
     final profile = ProfileHiveService.getProfile();
-    _currentImagePath = profile?.image ?? null;
-    usernameController = TextEditingController(text: profile?.name ?? '');
+    // You can also use profile?.image if you want to display it here
+
+    _loadNotificationPreference();
+    _initializeNotificationPlugin();
   }
 
   Future<void> _initializeNotificationPlugin() async {
-    // Use your default launcher icon so the resource is always found
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
     final InitializationSettings initializationSettings =
@@ -266,7 +274,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
       SnackBar(
         content:
             Text(value ? 'Notifications Enabled' : 'Notifications Disabled'),
-        duration: Duration(seconds: 1),
+        duration: const Duration(seconds: 1),
       ),
     );
 
@@ -285,7 +293,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
       channelDescription: 'Channel for notification settings',
       importance: Importance.high,
       priority: Priority.high,
-      icon: '@mipmap/ic_launcher', // explicitly set a valid icon
+      icon: '@mipmap/ic_launcher',
     );
 
     const NotificationDetails platformDetails =
@@ -302,9 +310,8 @@ class _NotificationSettingsState extends State<NotificationSettings> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading:
-          Icon(Icons.notifications, color: Theme.of(context).iconTheme.color),
-      title: Text('Notifications'),
+      leading: Icon(Icons.notifications, color: Theme.of(context).iconTheme.color),
+      title: const Text('Notifications'),
       trailing: Switch(
         value: _notificationsOn,
         onChanged: _toggleNotification,
@@ -324,7 +331,7 @@ class DarkModeSettings extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(value ? 'Dark Mode Enabled' : 'Dark Mode Disabled'),
-        duration: Duration(seconds: 1),
+        duration: const Duration(seconds: 1),
       ),
     );
   }
@@ -337,7 +344,7 @@ class DarkModeSettings extends StatelessWidget {
         themeProvider.isDarkMode ? Icons.shield_moon : Icons.wb_sunny,
         color: Theme.of(context).iconTheme.color,
       ),
-      title: Text('Dark Mode'),
+      title: const Text('Dark Mode'),
       trailing: Switch(
         value: themeProvider.isDarkMode,
         onChanged: (value) => _toggleDarkMode(context, value),
@@ -345,3 +352,4 @@ class DarkModeSettings extends StatelessWidget {
     );
   }
 }
+
