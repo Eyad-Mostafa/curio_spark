@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:curio_spark/screens/home.dart';
+import 'package:curio_spark/services/hive/profile_hive_service.dart';
 import 'package:curio_spark/services/notification_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -18,6 +22,8 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  TextEditingController? usernameController;
+  String? _currentImagePath;
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -29,23 +35,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             children: [
               Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
-              Stack(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.asset(tProfileImage),
-                    ),
-                  ),
-                ],
-              ),
+            Stack(
+    children: [
+    SizedBox(
+      width: 120,
+      height: 120,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: _currentImagePath != null && File(_currentImagePath!).existsSync()
+            ? Image.file(File(_currentImagePath!), fit: BoxFit.cover)
+            : Image.asset('assets/images/icon/default.png', fit: BoxFit.cover),
+      ),
+    ),
+  ],
+),
+
               SizedBox(height: 10),
               Text(
-                "Welcome Mr.",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
+  "Welcome Mr. ${usernameController?.text ?? ''}",
+  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+),
               SizedBox(height: 20),
               SizedBox(
                 width: 200,
@@ -200,7 +209,6 @@ class SettingsMenu extends StatelessWidget {
 
 /// NOTIFICATIONS
 class NotificationSettings extends StatefulWidget {
-
   @override
   State<NotificationSettings> createState() => _NotificationSettingsState();
 }
@@ -210,12 +218,16 @@ class _NotificationSettingsState extends State<NotificationSettings> {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  @override
-  void initState() {
-    super.initState();
-    _loadNotificationPreference();
-    _initializeNotificationPlugin();
-  }
+TextEditingController? usernameController;
+String? _currentImagePath;
+
+@override
+void initState() {
+  super.initState();
+  final profile = ProfileHiveService.getProfile();
+  _currentImagePath = profile?.image ?? null;
+  usernameController = TextEditingController(text: profile?.name ?? '');
+}
 
   Future<void> _initializeNotificationPlugin() async {
     // Use your default launcher icon so the resource is always found
@@ -264,7 +276,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
       channelDescription: 'Channel for notification settings',
       importance: Importance.high,
       priority: Priority.high,
-      icon: '@mipmap/ic_launcher',  // explicitly set a valid icon
+      icon: '@mipmap/ic_launcher', // explicitly set a valid icon
     );
 
     const NotificationDetails platformDetails =
@@ -291,8 +303,6 @@ class _NotificationSettingsState extends State<NotificationSettings> {
     );
   }
 }
-
-
 
 /// DARK MODE
 class DarkModeSettings extends StatelessWidget {
