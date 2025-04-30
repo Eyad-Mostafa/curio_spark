@@ -144,7 +144,8 @@ class _FavScreenState extends State<FavScreen> {
                                   onCuriosityTapped: (curio) =>
                                       CuriosityHiveService.toggleFavorite(
                                           curio.id),
-                                  onDismissed: (Curiosity) {},
+                                  onDismissed: (Curiosity) =>
+                                    CuriosityHiveService.deleteCuriosity(Curiosity.id),
                                 ),
                             ],
                           ),
