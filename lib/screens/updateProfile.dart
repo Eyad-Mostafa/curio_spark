@@ -27,16 +27,28 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   final profile = ProfileHiveService.getProfile();
 
+
   @override
-  void initState() {
-    super.initState();
-    var box = Hive.box('profileBox');
-    _currentImagePath = box.get('profileImage');
-    usernameController =
-        TextEditingController(text: profile?.name ?? '');
-    emailController =
-        TextEditingController(text: profile?.email ?? '');
+void initState() {
+  super.initState();
+  // Access the already opened box instead of opening it again
+  var box = Hive.box<Profile>('profiles');
+
+  // Get the first profile from the box (or default values if it's empty)
+  var profile = box.isNotEmpty ? box.getAt(0) : null;
+
+  if (profile != null) {
+    _currentImagePath = profile.image;
+    usernameController = TextEditingController(text: profile.name);
+    emailController = TextEditingController(text: profile.email);
+  } else {
+    // Set default values if no profile exists
+    _currentImagePath = null;
+    usernameController = TextEditingController(text: '');
+    emailController = TextEditingController(text: '');
   }
+}
+
 
   @override
   void dispose() {

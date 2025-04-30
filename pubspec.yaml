@@ -46,6 +46,7 @@ flutter:
     - assets/images/icon/icon.png
     - assets/images/icon/idea.png
     - assets/images/icon/better.png
+    - assets/images/icon/default.png
 
 flutter_launcher_icons:
   image_path: "assets/images/icon/better.png"

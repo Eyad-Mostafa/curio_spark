@@ -18,24 +18,21 @@ class CuriosityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: UniqueKey(), // use Key('someUniqueString') or UniqueKey() safely
+      key: UniqueKey(),
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: 20),
+        padding: const EdgeInsets.only(right: 20),
         color: const Color.fromARGB(255, 121, 79, 76),
-        child: Icon(Icons.delete, color: Colors.white),
+        child: const Icon(Icons.delete, color: Colors.white),
       ),
       onDismissed: (direction) {
-        // You handle deletion or callback here
         onDismissed(curiosity);
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),
         child: ListTile(
-          onTap: () {
-            onCuriosityTapped(curiosity);
-          },
+          onTap: () => onCuriosityTapped(curiosity),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -44,35 +41,41 @@ class CuriosityCard extends StatelessWidget {
           tileColor: Colors.white,
           title: Text(
             curiosity.content ?? '',
-            style: TextStyle(
-              fontSize: 16,
+            style: const TextStyle(
+              fontSize: 20,
               color: tdBlack,
             ),
           ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                curiosity.isFavorite ? Icons.favorite : Icons.favorite_outline,
-                color: const Color.fromARGB(255, 50, 49, 51),
-              ),
-              const SizedBox(width: 10),
-              Container(
-                height: 35,
-                width: 35,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 53, 50, 50),
-                  borderRadius: BorderRadius.circular(5),
+          // نقل الأزرار إلى الأسفل على الجهة اليسرى باستخدام subtitle
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  curiosity.isFavorite
+                      ? Icons.favorite
+                      : Icons.favorite_outline,
+                  color: const Color.fromARGB(255, 50, 49, 51),
                 ),
-                child: IconButton(
-                  iconSize: 16,
-                  icon: const Icon(Icons.share, color: Colors.white),
-                  onPressed: () {
-                     Share.share(curiosity.content ?? '');
-                  },
+                const SizedBox(width: 10),
+                Container(
+                  height: 35,
+                  width: 35,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 53, 50, 50),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: IconButton(
+                    iconSize: 16,
+                    icon: const Icon(Icons.share, color: Colors.white),
+                    onPressed: () {
+                      Share.share(curiosity.content ?? '');
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
