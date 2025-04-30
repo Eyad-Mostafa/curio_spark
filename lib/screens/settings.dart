@@ -28,7 +28,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    var box = Hive.box("profileBox");
+    // var box = Hive.box("profiles");
     final profile = ProfileHiveService.getProfile();
     final name = profile?.name ?? '';
 
@@ -39,20 +39,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             children: [
               Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
-            Stack(
-    children: [
-    SizedBox(
-      width: 120,
-      height: 120,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(100),
-        child: _currentImagePath != null && File(_currentImagePath!).existsSync()
-            ? Image.file(File(_currentImagePath!), fit: BoxFit.cover)
-            : Image.asset('assets/images/icon/default.png', fit: BoxFit.cover),
-      ),
-    ),
-  ],
-),
+              Stack(
+                children: [
+                  SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: _currentImagePath != null &&
+                              File(_currentImagePath!).existsSync()
+                          ? Image.file(File(_currentImagePath!),
+                              fit: BoxFit.cover)
+                          : Image.asset('assets/images/icon/default.png',
+                              fit: BoxFit.cover),
+                    ),
+                  ),
+                ],
+              ),
 
               SizedBox(height: 10),
               Text(
@@ -224,16 +227,16 @@ class _NotificationSettingsState extends State<NotificationSettings> {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-TextEditingController? usernameController;
-String? _currentImagePath;
+  TextEditingController? usernameController;
+  String? _currentImagePath;
 
-@override
-void initState() {
-  super.initState();
-  final profile = ProfileHiveService.getProfile();
-  _currentImagePath = profile?.image ?? null;
-  usernameController = TextEditingController(text: profile?.name ?? '');
-}
+  @override
+  void initState() {
+    super.initState();
+    final profile = ProfileHiveService.getProfile();
+    _currentImagePath = profile?.image ?? null;
+    usernameController = TextEditingController(text: profile?.name ?? '');
+  }
 
   Future<void> _initializeNotificationPlugin() async {
     // Use your default launcher icon so the resource is always found

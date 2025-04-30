@@ -27,28 +27,27 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   final profile = ProfileHiveService.getProfile();
 
-
   @override
-void initState() {
-  super.initState();
-  // Access the already opened box instead of opening it again
-  var box = Hive.box<Profile>('profiles');
+  @override
+  void initState() {
+    super.initState();
+    // Access the already opened box instead of opening it again
+    var box = Hive.box<Profile>('profiles');
 
-  // Get the first profile from the box (or default values if it's empty)
-  var profile = box.isNotEmpty ? box.getAt(0) : null;
+    // Get the first profile from the box (or default values if it's empty)
+    var profile = box.isNotEmpty ? box.getAt(0) : null;
 
-  if (profile != null) {
-    _currentImagePath = profile.image;
-    usernameController = TextEditingController(text: profile.name);
-    emailController = TextEditingController(text: profile.email);
-  } else {
-    // Set default values if no profile exists
-    _currentImagePath = null;
-    usernameController = TextEditingController(text: '');
-    emailController = TextEditingController(text: '');
+    if (profile != null) {
+      _currentImagePath = profile.image;
+      usernameController = TextEditingController(text: profile.name);
+      emailController = TextEditingController(text: profile.email);
+    } else {
+      // Set default values if no profile exists
+      _currentImagePath = null;
+      usernameController = TextEditingController(text: '');
+      emailController = TextEditingController(text: '');
+    }
   }
-}
-
 
   @override
   void dispose() {
@@ -171,13 +170,25 @@ void initState() {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
+                        // Get the profile box
+                        final box = Hive.box<Profile>('profiles');
+
+                        // Create a new profile with the updated data
                         final profile = Profile(
                           name: usernameController.text,
                           email: emailController.text,
                           image: _currentImagePath,
                         );
 
-                        await ProfileHiveService.saveProfile(profile);
+                        // Save or update the profile (we assume one profile in the box)
+                        if (box.isEmpty) {
+                          await box
+                              .add(profile); // Add new profile if none exists
+                        } else {
+                          await box.putAt(
+                              0, profile); // Update the first profile
+                        }
+
                         Navigator.pop(context);
                       }
                     },
