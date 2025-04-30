@@ -1,6 +1,9 @@
 import 'package:curio_spark/screens/home.dart';
+import 'package:curio_spark/screens/splashscreen.dart';
+import 'package:curio_spark/services/hive/profile_hive_service.dart';
 import 'package:curio_spark/services/notification_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -21,6 +24,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    var box = Hive.box("profileBox");
+    final profile = ProfileHiveService.getProfile();
+    final name = profile?.name ?? '';
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -43,7 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               SizedBox(height: 10),
               Text(
-                "Welcome Mr.",
+                "Welcome ${name}",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 20),
@@ -134,9 +140,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 40,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    ProfileHiveService.deleteProfile();
+                    Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      MaterialPageRoute(builder: (context) => SplashScreen()),
                     );
                   },
                   child: Text("Restart Progress"),

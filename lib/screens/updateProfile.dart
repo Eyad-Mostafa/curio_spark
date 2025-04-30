@@ -25,15 +25,17 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   File? _newImage;
   String? _currentImagePath;
 
+  final profile = ProfileHiveService.getProfile();
+
   @override
   void initState() {
     super.initState();
     var box = Hive.box('profileBox');
     _currentImagePath = box.get('profileImage');
     usernameController =
-        TextEditingController(text: box.get('name', defaultValue: ''));
+        TextEditingController(text: profile?.name ?? '');
     emailController =
-        TextEditingController(text: box.get('email', defaultValue: ''));
+        TextEditingController(text: profile?.email ?? '');
   }
 
   @override
