@@ -28,7 +28,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   @override
   void initState() {
     super.initState();
-    var box = Hive.box('profileBox');
+    var box = Hive.box('profiles');
     _currentImagePath = box.get('profileImage');
     usernameController =
         TextEditingController(text: box.get('name', defaultValue: ''));

@@ -1,5 +1,6 @@
 import 'package:curio_spark/model/profile.dart';
 import 'package:curio_spark/screens/splashscreen.dart';
+import 'package:curio_spark/services/hive/profile_hive_service.dart';
 import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ void main() async {
   await Hive.openBox<Profile>('profiles');
   await Hive.openBox<Curiosity>('curiosities');
   CuriosityHiveService.init();
-  await Hive.openBox('profileBox');
+  ProfileHiveService.init();
 
   // Initialize Android Alarm Manager (non-web only)
   if (!kIsWeb) {
