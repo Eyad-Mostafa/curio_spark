@@ -1,9 +1,9 @@
 import 'package:curio_spark/screens/fav.dart';
 import 'package:curio_spark/screens/home.dart';
 import 'package:curio_spark/screens/settings.dart';
-import 'package:curio_spark/widgets/theme.dart';
+// import 'package:curio_spark/widgets/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 import '../constants/colors.dart';
 
 class MainScreen extends StatefulWidget {
@@ -30,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    // final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       body: IndexedStack(

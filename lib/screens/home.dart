@@ -1,17 +1,13 @@
-import 'package:curio_spark/constants/colors.dart';
 import 'package:curio_spark/model/curiosity.dart';
 import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
-import 'package:curio_spark/services/notification_service.dart';
 import 'package:curio_spark/widgets/curiosity_card.dart';
 import 'package:flutter/material.dart';
-import 'package:curio_spark/services/gemini_service.dart';
 import 'package:curio_spark/widgets/speech_input.dart';
-import 'package:hive_flutter/hive_flutter.dart'; // for Hive.box()
 
 final speechInputKey = GlobalKey<SpeechInputState>();
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -89,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           TextButton(
             onPressed: () async {
-              await NotificationService.notifyNewCuriosity();
+              // await NotificationService.notifyNewCuriosity();
 
               if (contentController.text.isNotEmpty) {
                 final newCuriosity = Curiosity(

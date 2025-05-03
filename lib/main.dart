@@ -10,7 +10,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:curio_spark/model/curiosity.dart';
 import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:device_preview/device_preview.dart'; // <--- Added back
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,12 +35,9 @@ void main() async {
 
   // Run the app
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode, // Only enable in debug or profile mode
-      builder: (context) => ChangeNotifierProvider(
-        create: (_) => ThemeProvider()..init(),
-        child: const MyApp(),
-      ),
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider()..init(),
+      child: const MyApp(),
     ),
   );
 }
@@ -58,8 +54,6 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      builder: DevicePreview.appBuilder, // <--- Added back
-      useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
       title: 'CurioSpark',
       home: SplashScreen(),

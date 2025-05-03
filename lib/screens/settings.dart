@@ -1,11 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-import 'package:curio_spark/constants/colors.dart';
 import 'package:curio_spark/model/profile.dart';
 import 'package:curio_spark/screens/about.dart';
 import 'package:curio_spark/screens/splashscreen.dart';
@@ -36,7 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    // final themeProvider = Provider.of<ThemeProvider>(context);
     final imagePath = _profile?.image;
     final profileName = _profile?.name ?? '';
 

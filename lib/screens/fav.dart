@@ -1,7 +1,6 @@
 import 'package:curio_spark/model/curiosity.dart';
 import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
 import 'package:flutter/material.dart';
-import '../constants/colors.dart';
 import '../widgets/curiosity_card.dart';
 
 class FavScreen extends StatefulWidget {
@@ -36,7 +35,7 @@ class _FavScreenState extends State<FavScreen> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
+          SizedBox(
             height: 40,
             width: 40,
             child: ClipRRect(

@@ -25,10 +25,8 @@ class CuriosityHiveService {
   }
 
   static Future<void> addCuriosity(Curiosity curiosity) async {
-  if (curiosity != null) {
-    await box.put(curiosity.id, curiosity);
-    _updateStream();
-  }
+  await box.put(curiosity.id, curiosity);
+  _updateStream();
 }
 
 

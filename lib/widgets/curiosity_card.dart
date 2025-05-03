@@ -42,7 +42,7 @@ class CuriosityCard extends StatelessWidget {
           title: Text(
             curiosity.content ?? '',
             style: const TextStyle(
-              fontSize: 13,
+              fontSize: 15,
               color: tdBlack,
             ),
           ),

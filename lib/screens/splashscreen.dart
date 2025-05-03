@@ -12,7 +12,7 @@ import 'package:curio_spark/model/curiosity.dart';
 import 'package:curio_spark/model/profile.dart';
 
 // Define the alarm interval as a constant for easy changes
-const Duration alarmInterval = Duration(seconds: 30); // Adjust as needed
+const Duration alarmInterval = Duration(hours: 12); // Adjust as needed
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _prepareApp() async {
     // 1) Let the splash animation play
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
 
     // 2) Schedule background fetch (won't block UI)
     _scheduleBackgroundFetch();
