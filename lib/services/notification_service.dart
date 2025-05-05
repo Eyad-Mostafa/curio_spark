@@ -5,7 +5,6 @@ class NotificationService {
   static const _prefKey = 'notifications_on';
   static final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
 
-  /// Call this once at app startup.
   static Future<void> initialize() async {
     const androidInit = AndroidInitializationSettings('app_icon');
     final settings = InitializationSettings(android: androidInit);

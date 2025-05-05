@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import '../model/curiosity.dart';
-import '../constants/colors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CuriosityCard extends StatelessWidget {
   final Curiosity curiosity;

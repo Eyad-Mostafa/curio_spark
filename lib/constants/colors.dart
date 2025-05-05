@@ -11,12 +11,12 @@ const Color tdBGColor = Color(0xFFEEEFF5);
 String tProfileImage = 'bugs-bunny-wallpaper.jpg';
 const Color editIcon = Colors.amberAccent;
 
-const String AbdulrahmanEmail = "Abdelrahmanhamdi65@gmail.com";
-const String EyadEmail = "eyadmostafa464@gmail.com";
-const String RahmaEmail = "rahmanaser964@gmail.com";
-const String RashadEmail = "rashadmostafa84@gmail.com";
+const String abdulrahmanEmail = "Abdelrahmanhamdi65@gmail.com";
+const String eyadEmail = "eyadmostafa464@gmail.com";
+const String rahmaEmail = "rahmanaser964@gmail.com";
+const String rashadEmail = "rashadmostafa84@gmail.com";
 
-const String AbdulrahmanImg = "assets/images/icon/abdelrahman.jpg";
-const String EyadImg = "assets/images/icon/Eyad.jpg";
-const String RahmaImg = "assets/images/icon/rahma.jpg";
-const String RashadImg = "assets/images/icon/rashad.jpg";
+const String abdulrahmanImg = "assets/images/icon/abdelrahman.jpg";
+const String eyadImg = "assets/images/icon/Eyad.jpg";
+const String rahmaImg = "assets/images/icon/rahma.jpg";
+const String rashadImg = "assets/images/icon/rashad.jpg";

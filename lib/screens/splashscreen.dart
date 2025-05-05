@@ -4,9 +4,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:curio_spark/services/gemini_service.dart';
 import 'package:curio_spark/screens/MainScreen.dart';
-import 'package:curio_spark/constants/colors.dart';
-import 'package:curio_spark/constants/colors.dart';
-// Hive imports for background isolate
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:curio_spark/model/curiosity.dart';
 import 'package:curio_spark/model/profile.dart';
@@ -118,9 +115,7 @@ Future<void> _backgroundFetchTask() async {
     Hive.registerAdapter(ProfileAdapter());
   }
 
-  // Open the necessary box
   final curiosityBox = await Hive.openBox<Curiosity>('curiosities');
 
-  // Call your generator (passing the box)
   await CuriosityGeneratorService.generateAndSaveUniqueCuriosity(curiosityBox);
 }

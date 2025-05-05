@@ -26,7 +26,7 @@ class _FavScreenState extends State<FavScreen> {
   }
 
   void _runFilter() {
-    setState(() {}); // Just triggers rebuild to apply search filter
+    setState(() {});
   }
 
   AppBar _buildAppBar() {
@@ -84,7 +84,6 @@ class _FavScreenState extends State<FavScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          // Apply both favorite and search filters
           final filtered = snapshot.data!
               .where((c) => c.isFavorite)
               .where((c) =>

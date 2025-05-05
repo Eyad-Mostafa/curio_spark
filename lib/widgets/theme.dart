@@ -30,7 +30,7 @@ class ThemeProvider extends ChangeNotifier {
   ThemeData get lightTheme => ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.deepPurple,
-        scaffoldBackgroundColor: Color(0xFFEDE6F4), // Fixed typo here
+        scaffoldBackgroundColor: Color(0xFFEDE6F4),
         iconTheme: IconThemeData(color: Color(0xFF260656)),
         textTheme: TextTheme(
           bodyMedium: TextStyle(color: Color(0xFF260656)),
@@ -86,7 +86,7 @@ class ThemeProvider extends ChangeNotifier {
   ThemeData get darkTheme => ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.deepPurple,
-        scaffoldBackgroundColor: Color(0xFF080121), // Fixed typo here
+        scaffoldBackgroundColor: Color(0xFF080121),
         iconTheme: IconThemeData(color: Color.fromARGB(255, 126, 48, 204)),
         textTheme: TextTheme(
           bodyMedium: TextStyle(color: Color(0xFFEDE6F4)),

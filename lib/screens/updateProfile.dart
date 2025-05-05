@@ -6,8 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:curio_spark/constants/colors.dart';
 import 'package:curio_spark/model/profile.dart';
-// import 'package:curio_spark/widgets/theme.dart';
-// import 'package:provider/provider.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
@@ -94,7 +92,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final themeProvider = Provider.of<ThemeProvider>(context);
     final iconColor = Theme.of(context).iconTheme.color;
 
     return Scaffold(

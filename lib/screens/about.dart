@@ -19,19 +19,19 @@ class AboutScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  Icon(Icons.auto_awesome, size: 50, color: Theme.of(context).iconTheme.color),
+                  Icon(Icons.auto_awesome,
+                      size: 50, color: Theme.of(context).iconTheme.color),
                   const SizedBox(height: 10),
                   Text(
                     "About Us",
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(height: 20),
                 ],
               ),
             ),
-
             Text(
               """CurioSpark is an app designed by students from the Faculty of Science, Ain Shams University, as part of our project and collaboration with Gemini (AI).
 
@@ -44,40 +44,37 @@ It refers to: Interesting facts, fascinating ideas, rare or unusual knowledge, t
 So CurioSpark means:
 “A spark of curiosity” — an app that lights up your curiosity with a daily dose of wonder.""",
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontSize: 16,
-                height: 1.6,
-              ),
+                    fontSize: 16,
+                    height: 1.6,
+                  ),
             ),
-
             const SizedBox(height: 30),
             const Divider(thickness: 1.2),
-
             const SizedBox(height: 20),
             Text(
               "Meet the Team",
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 10),
-
             MemberCard(
               name: "Abdulrahman Hamdy",
-              email: AbdulrahmanEmail,
-              imagePath: AbdulrahmanImg,
+              email: abdulrahmanEmail,
+              imagePath: abdulrahmanImg,
             ),
             MemberCard(
               name: "Eyad Mostafa",
-              email: EyadEmail,
-              imagePath: EyadImg,
+              email: eyadEmail,
+              imagePath: eyadImg,
             ),
             MemberCard(
               name: "Rahma Nasser",
-              email: RahmaEmail,
-              imagePath: RahmaImg,
+              email: rahmaEmail,
+              imagePath: rahmaImg,
             ),
             MemberCard(
               name: "Rashad Mostafa",
-              email: RashadEmail,
-              imagePath: RashadImg,
+              email: rashadEmail,
+              imagePath: rashadImg,
             ),
           ],
         ),
@@ -103,7 +100,7 @@ class MemberCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Card(
-        elevation: 6,  
+        elevation: 6,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -127,7 +124,8 @@ class MemberCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     email,
-                    style:TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
+                    style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyLarge?.color),
                   ),
                 ],
               ),

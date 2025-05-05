@@ -34,7 +34,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final themeProvider = Provider.of<ThemeProvider>(context);
     final imagePath = _profile?.image;
     final profileName = _profile?.name ?? '';
 
@@ -46,7 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(height: 10),
             _buildProfileImage(imagePath),
             const SizedBox(height: 10),
-            Text("$profileName",
+            Text(profileName,
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
             const SizedBox(height: 20),

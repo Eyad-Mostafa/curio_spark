@@ -160,7 +160,6 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final curiosities = snapshot.data!;
-            // Always update filteredCuriosities if search is empty
             if (_searchController.text.isEmpty) {
               filteredCuriosities = curiosities.toList();
             }

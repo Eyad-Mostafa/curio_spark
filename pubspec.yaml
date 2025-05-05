@@ -1,5 +1,5 @@
 name: curio_spark
-description: A new Flutter project.
+description: CurioSpark is a Flutter mobile application developed as a project for the COMP 310 course. The app provides users with a feed of interesting curiosities, automatically fetched every 12 hours using background tasks. It combines elegant UI, persistent storage, and scheduled background logic—even when the app is closed.
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -22,7 +22,6 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.5
-  device_preview: ^1.1.0
   shared_preferences: ^2.2.0
   provider: ^6.1.1
   hive: ^2.2.3
@@ -43,7 +42,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/icon/icon.png
     - assets/images/icon/idea.png
     - assets/images/icon/better.png
     - assets/images/icon/default.png
