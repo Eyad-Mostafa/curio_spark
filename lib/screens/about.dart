@@ -116,7 +116,7 @@ class MemberCard extends StatelessWidget {
                   Text(
                     name,
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),

@@ -92,7 +92,7 @@ class ThemeProvider extends ChangeNotifier {
           bodyMedium: TextStyle(color: Color(0xFFEDE6F4)),
           headlineMedium: TextStyle(fontSize: 32, color: Color(0xFFEDE6F4)),
           bodyLarge: TextStyle(
-              fontSize: 16, color: Color.fromARGB(255, 250, 250, 252)),
+              fontSize: 14, color: Color.fromARGB(255, 250, 250, 252)),
           titleLarge: TextStyle(fontSize: 22, color: Color(0xFFEDE6F4)),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
