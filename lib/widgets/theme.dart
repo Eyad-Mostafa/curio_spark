@@ -31,9 +31,9 @@ class ThemeProvider extends ChangeNotifier {
         brightness: Brightness.light,
         primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: Color(0xFFEDE6F4), // Fixed typo here
-        iconTheme: IconThemeData(color: Color(0xFF120239)),
+        iconTheme: IconThemeData(color: Color(0xFF260656)),
         textTheme: TextTheme(
-          bodyMedium: TextStyle(color: Color(0xFF120239)),
+          bodyMedium: TextStyle(color: Color(0xFF260656)),
           headlineMedium: TextStyle(fontSize: 32, color: Color(0xFF120239)),
           bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF120239)),
           titleLarge: TextStyle(fontSize: 22, color: Color(0xFF120239)),
@@ -80,7 +80,6 @@ class ThemeProvider extends ChangeNotifier {
             borderRadius: BorderRadius.circular(16),
           ),
         ),
-        
       );
 
   // Dark theme definition
@@ -88,11 +87,12 @@ class ThemeProvider extends ChangeNotifier {
         brightness: Brightness.dark,
         primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: Color(0xFF080121), // Fixed typo here
-        iconTheme: IconThemeData(color: Color(0xFFa580ca)),
+        iconTheme: IconThemeData(color: Color.fromARGB(255, 126, 48, 204)),
         textTheme: TextTheme(
           bodyMedium: TextStyle(color: Color(0xFFEDE6F4)),
           headlineMedium: TextStyle(fontSize: 32, color: Color(0xFFEDE6F4)),
-          bodyLarge: TextStyle(fontSize: 16, color: Color.fromARGB(255, 250, 250, 252)),
+          bodyLarge: TextStyle(
+              fontSize: 16, color: Color.fromARGB(255, 250, 250, 252)),
           titleLarge: TextStyle(fontSize: 22, color: Color(0xFFEDE6F4)),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(

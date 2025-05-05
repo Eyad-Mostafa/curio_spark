@@ -36,7 +36,7 @@ class CuriosityCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: theme.cardColor,
+          color: theme.cardTheme.color,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
