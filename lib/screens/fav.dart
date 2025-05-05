@@ -58,7 +58,7 @@ class _FavScreenState extends State<FavScreen> {
         controller: _searchController,
         style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(0),
+          contentPadding: EdgeInsets.zero,
           prefixIcon: Icon(Icons.search, color: Theme.of(context).iconTheme.color, size: 20),
           prefixIconConstraints: BoxConstraints(maxHeight: 20, minWidth: 25),
           border: InputBorder.none,

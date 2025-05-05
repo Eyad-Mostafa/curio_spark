@@ -47,6 +47,10 @@ flutter:
     - assets/images/icon/idea.png
     - assets/images/icon/better.png
     - assets/images/icon/default.png
+    - assets/images/icon/abdelrahman.jpg
+    - assets/images/icon/rahma.jpg
+    - assets/images/icon/Eyad.jpg
+    - assets/images/icon/rashad.jpg
 
 flutter_launcher_icons:
   image_path: "assets/images/icon/better.png"
