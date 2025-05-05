@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:curio_spark/services/hive/curiosity_hive_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -114,6 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: ElevatedButton(
         onPressed: () {
           ProfileHiveService.deleteProfile();
+          CuriosityHiveService.clear();
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => const SplashScreen()));
         },
