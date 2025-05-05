@@ -5,7 +5,7 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:curio_spark/services/gemini_service.dart';
 import 'package:curio_spark/screens/MainScreen.dart';
 import 'package:curio_spark/constants/colors.dart';
-
+import 'package:curio_spark/constants/colors.dart';
 // Hive imports for background isolate
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:curio_spark/model/curiosity.dart';
@@ -89,7 +89,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: tdBGColor,
+      
         body: Center(
           child: FadeTransition(
             opacity: _animation,
