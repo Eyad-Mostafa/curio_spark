@@ -60,7 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
             TextField(
               controller: contentController,
               style: Theme.of(context).textTheme.bodyMedium,
-              decoration: const InputDecoration(hintText: "Enter your curiosity"),
+              decoration:
+                  const InputDecoration(hintText: "Enter your curiosity"),
               autofocus: true,
             ),
             const SizedBox(height: 16),
@@ -163,11 +164,12 @@ class _HomeScreenState extends State<HomeScreen> {
             if (_searchController.text.isEmpty) {
               filteredCuriosities = curiosities.toList();
             }
+
             return Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   child: Column(
                     children: [
                       searchBox(),
