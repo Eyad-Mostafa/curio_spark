@@ -54,27 +54,32 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Add New Curiosity'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: contentController,
-              style: Theme.of(context).textTheme.bodyMedium,
-              decoration:
-                  const InputDecoration(hintText: "Enter your curiosity"),
-              autofocus: true,
+        content: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 300), // Limit height
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: contentController,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  decoration:
+                      const InputDecoration(hintText: "Enter your curiosity"),
+                  autofocus: true,
+                ),
+                const SizedBox(height: 16),
+                SpeechInput(
+                  key: speechInputKey,
+                  onResult: (text) {
+                    contentController.text = text;
+                    contentController.selection = TextSelection.fromPosition(
+                      TextPosition(offset: text.length),
+                    );
+                  },
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            SpeechInput(
-              key: speechInputKey,
-              onResult: (text) {
-                contentController.text = text;
-                contentController.selection = TextSelection.fromPosition(
-                  TextPosition(offset: text.length),
-                );
-              },
-            ),
-          ],
+          ),
         ),
         actions: [
           TextButton(
@@ -86,8 +91,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           TextButton(
             onPressed: () async {
-              // await NotificationService.notifyNewCuriosity();
-
               if (contentController.text.isNotEmpty) {
                 final newCuriosity = Curiosity(
                   id: DateTime.now().millisecondsSinceEpoch.toString(),
