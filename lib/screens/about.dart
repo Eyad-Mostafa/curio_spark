@@ -110,24 +110,30 @@ class MemberCard extends StatelessWidget {
                 backgroundImage: AssetImage(imagePath),
               ),
               const SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).textTheme.bodyLarge?.color,
+              Expanded(
+                // ✅ This ensures the column takes available space and wraps if needed
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    email,
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyLarge?.color),
-                  ),
-                ],
+                    const SizedBox(height: 4),
+                    Text(
+                      email,
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
+                      overflow: TextOverflow
+                          .ellipsis, // optional: adds "..." if too long
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

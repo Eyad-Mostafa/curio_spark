@@ -11,7 +11,7 @@ const Color tdBGColor = Color(0xFFEEEFF5);
 String tProfileImage = 'bugs-bunny-wallpaper.jpg';
 const Color editIcon = Colors.amberAccent;
 
-const String abdulrahmanEmail = "abdohamdy4587@gmail.com";
+const String abdulrahmanEmail ="abdohamdy4587@gmail";
 const String eyadEmail = "eyadmostafa464@gmail.com";
 const String rahmaEmail = "rahmanaser964@gmail.com";
 const String rashadEmail = "rashadmostafa84@gmail.com";
