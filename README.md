@@ -10,6 +10,7 @@ CurioSpark is a Flutter mobile application developed as a project for the **COMP
 - 🔧 Background processing with [`android_alarm_manager_plus`](https://pub.dev/packages/android_alarm_manager_plus)
 - 💾 Persistent storage using Hive
 - 🌐 Gemini-powered curiosity generation
+- 🔁 Share curiosities as a text
 - 📱 Minimal and modern UI built with Flutter
 
 ## 🛠 Tech Stack
