@@ -8,9 +8,9 @@ import 'package:curio_spark/services/notification_service.dart';
 import '../model/curiosity.dart';
 
 class CuriosityGeneratorService {
-  static const String _apiKey = 'AIzaSyAydsTTpYvXqydxr4Tq1jQaOlxVdJx86eM';
+  static const String _apiKey = 'AIzaSyApIkQ3Ky3Noto2wYvD73Xe_9Hslqp9XM4';
   static const String _endpoint =
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=$_apiKey';
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$_apiKey';
 
   static final List<String> _randomPrompts = [
     "Give me one surprising scientific fact that most people don't know.",
